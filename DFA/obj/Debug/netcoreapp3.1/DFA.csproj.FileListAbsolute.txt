@@ -16,4 +16,3 @@ C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\netcoreapp3.1\DFA.Properties.Reso
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\netcoreapp3.1\DFA.Form2.resources
 C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Debug\netcoreapp3.1\Resources\AppIcon.ico
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\netcoreapp3.1\DFA.TestingForm.resources
-C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\netcoreapp3.1\DFA.csprojAssemblyReference.cache

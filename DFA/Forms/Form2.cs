@@ -50,12 +50,12 @@ namespace DFA
         public const int WM_NCLBUTTONDOWN = 0xA1;
 
 
-        int penTrackingResetCounter=0;
-        int penTrackingResetCounterLimitAsOfPenTrackingErrorOffset = 3; //currently not needed but set in case if i would to make an option for this
+        int penTrackingResetCounter;
+        int penTrackingResetCounterLimitAsOfPenTrackingErrorOffset = 3;
         String msg;
         String msgFromInput;
 
-        int refreshTimerInMiliseconds = 1000;//==1sec, 10 * 1000 = 10 secs , 100 = ,1 sec
+        int refreshTimerInMiliseconds = 50;//==1sec, 10 * 1000 = 10 secs , 100 = ,1 sec
         bool isArtistActive = false;
 
         private NotifyIcon trayIcon;
@@ -71,8 +71,8 @@ namespace DFA
             this.TopMost = true;
 
 
-            this.pictureBoxParent.MouseDown += new System.Windows.Forms.MouseEventHandler(Form2_MouseDown);
-            this.pictureBoxParent.MouseUp += new System.Windows.Forms.MouseEventHandler(Form2_MouseUp);
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(Form2_MouseDown);
+            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(Form2_MouseUp);
 
 
             HWnd = this.Handle;
@@ -111,12 +111,11 @@ namespace DFA
 
         protected override void OnLoad(EventArgs e)
         {
-            //label1.Parent = pictureBoxParent;
-            //label2TimeLabelText.Parent = pictureBoxParent;
-            //label3.Parent = pictureBoxParent;
-            //label4.Parent = pictureBoxParent;
-            //label5.Parent = pictureBoxParent;
-
+            label1.Parent = pictureBox1;
+            timeLabelText.Parent = pictureBox1;
+            label3.Parent = pictureBox1;
+            label4.Parent = pictureBox1;
+            label5.Parent = pictureBox1;
 
             //setting height through code becuase designer counts with the window itself//nvm
             //this.MaximumSize = new Size(this.Size.Width, MinimumSize.Height);
@@ -251,10 +250,6 @@ namespace DFA
         public bool UpdatedDifferenceOnStop = false;
         public bool ShowActiveTimeInSeconds = false;
 
-        public float currentTopmostBarProgress;
-        public float maxTopmostBarProgress;
-
-
         public float currentMainBarProgress;
         public float maxMainBarProgress;
         public int timeSecToFillMainBar = 5;
@@ -271,7 +266,6 @@ namespace DFA
             timerArtistActive.Start();
 
             maxMainBarProgress = 5 * 1000 / refreshTimerInMiliseconds;
-            maxTopmostBarProgress = 5 * 1000 / refreshTimerInMiliseconds;
 
             Timer timerProgressBarsUpdate = new Timer();
             timerProgressBarsUpdate.Interval = graphicalProgressBarUpdateInMiliseconds;
@@ -279,34 +273,22 @@ namespace DFA
             timerProgressBarsUpdate.Start();
         }
 
-        float currentVisualLerpProgressOfMainbar=0;
-        float currentVisualLerpProgressOftopmostbar=0;
+        float currentVisualProgressOfLerp=0;
 
         private void TimerUpdateProgressBarsGraphically(object sender, EventArgs e)
         {
 
-            currentVisualLerpProgressOfMainbar = Lerp(currentVisualLerpProgressOfMainbar, currentMainBarProgress, (float)0.1);
-            mainProgressBar.Value = ToSmoothProgressBarProcentage(currentVisualLerpProgressOfMainbar, 0,maxMainBarProgress);
-            //ToSmoothProgressBarProcentage(currentMainBarProgress, 0, maxMainBarProgress);
-
-
-           // currentVisualLerpProgressOftopmostbar = Lerp(currentVisualLerpProgressOftopmostbar, currentTopmostBarProgress, (float)0.1);
-           // topMostProgressBar.Value = ToSmoothProgressBarProcentage(currentVisualLerpProgressOftopmostbar, 0, maxTopmostBarProgress);
+            currentVisualProgressOfLerp = Lerp(currentVisualProgressOfLerp, currentMainBarProgress, (float)0.1);
+            mainProgressBar.Value = ToSmoothProgressBarProcentage(currentVisualProgressOfLerp, 0,maxMainBarProgress);
+                //ToSmoothProgressBarProcentage(currentMainBarProgress, 0, maxMainBarProgress);
 
         }
 
        
         private void TimerArtistActiveTick(object sender, EventArgs e)
         {
-
-            label5.Text = labTt;
-
             if (!isArtistActive)
             {
-                label4.Text = currentMainBarProgress.ToString();
-
-                topMostProgressBar.ForeColor = Color.FromArgb(221, 44, 0);
-
                 if (currentMainBarProgress > 0)
                     currentMainBarProgress--;
 
@@ -330,8 +312,6 @@ namespace DFA
             else
             {
 
-                topMostProgressBar.ForeColor = Color.FromArgb(178, 255, 89);
-
                 activatedFullTime += TimeSpan.FromMilliseconds(refreshTimerInMiliseconds);
 
                 if (currentMainBarProgress < 0)
@@ -347,10 +327,10 @@ namespace DFA
 
                 if (ShowActiveTimeInSeconds)
                 {
-                    label2TimeLabelText.Text = activatedFullTime.Second.ToString();
+                    timeLabelText.Text = activatedFullTime.Second.ToString();
                 }
                 else
-                    label2TimeLabelText.Text = activatedFullTime.ToLongTimeString().ToString();
+                    timeLabelText.Text = activatedFullTime.ToLongTimeString().ToString();
 
                 label3.Text = msgFromInput;
             }
@@ -359,7 +339,7 @@ namespace DFA
         }
 
 
-        string labTt;
+
 
 
         [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
@@ -376,7 +356,7 @@ namespace DFA
             switch (message.Msg)
             {
                 case (int)MsgType.WM_INPUT:
-                    labTt = "yes";
+
                     msgFromInput = message.LParam.ToString();
                     penTrackingResetCounter = 0;
                     isArtistActive = true;
@@ -384,11 +364,9 @@ namespace DFA
 
                 default:
                     penTrackingResetCounter++;
-                    labTt = "no";
 
                     if (penTrackingResetCounter > penTrackingResetCounterLimitAsOfPenTrackingErrorOffset)
                     {
-                    labTt = "no lul";
                         isArtistActive = false;
                         msgFromInput = "";
                         penTrackingResetCounter = 0;
@@ -445,6 +423,5 @@ namespace DFA
             return new Vector2(retX, retY);
         }
 
-        
     }
 }
