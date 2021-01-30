@@ -21,23 +21,33 @@ namespace DFA
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            const int inset = 2; // A single inset value to control teh sizing of the inner rect.
+            const int inset = 0; // A single inset value to control teh sizing of the inner rect.
 
             using (Image offscreenImage = new Bitmap(this.Width, this.Height))
             {
                 using (Graphics offscreen = Graphics.FromImage(offscreenImage))
                 {
-                    Rectangle rect = new Rectangle(0, 0, this.Width, this.Height);
 
-                    if (ProgressBarRenderer.IsSupported)
-                        ProgressBarRenderer.DrawHorizontalBar(offscreen, rect);
 
-                    rect.Inflate(new Size(-inset, -inset)); // Deflate inner rect.
-                    rect.Width = (int)(rect.Width * ((double)this.Value / this.Maximum));
-                    if (rect.Width == 0) rect.Width = 1; // Can't draw rec with width of 0.
 
-                    LinearGradientBrush brush = new LinearGradientBrush(rect, this.BackColor, this.ForeColor, LinearGradientMode.Vertical);
-                    offscreen.FillRectangle(brush, inset, inset, rect.Width, rect.Height);
+
+                    Rectangle fillRect = new Rectangle(0, 0, this.Width, this.Height);
+                    offscreen.FillRectangle(new SolidBrush(BackColor), fillRect);
+
+
+                   // if (ProgressBarRenderer.IsSupported)
+                   //  ProgressBarRenderer.DrawHorizontalBar(offscreen, rect);
+
+
+
+                    //    rect.Inflate(new Size(-inset, -inset)); // Deflate inner rect.
+                    fillRect.Width = (int)(fillRect.Width * ((double)this.Value / this.Maximum));
+                    if (fillRect.Width == 0) fillRect.Width = 1; // Can't draw rec with width of 0.
+                    //20; 20; 20    187; 143; 206
+                    //LinearGradientBrush brush = new LinearGradientBrush(rect, this.BackColor, this.ForeColor, LinearGradientMode.Vertical);
+                    LinearGradientBrush brush = new LinearGradientBrush(fillRect, Color.FromArgb(220, 143, 250), this.ForeColor, LinearGradientMode.Vertical);
+                    
+                    offscreen.FillRectangle(brush, inset, inset, fillRect.Width, fillRect.Height);
 
                     e.Graphics.DrawImage(offscreenImage, 0, 0);
                 }

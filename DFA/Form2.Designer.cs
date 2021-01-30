@@ -39,8 +39,7 @@ namespace DFA
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.mainProgressBar = new System.Windows.Forms.ProgressBar();
-            this.newProgressBar = new NewProgressBar();
+            this.newProgressBar1 = new DFA.NewProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,45 +108,24 @@ namespace DFA
             this.label5.Size = new System.Drawing.Size(38, 15);
             this.label5.TabIndex = 3;
             this.label5.Text = "label5";
-
             // 
-            // newProgressBar
+            // newProgressBar1
             // 
-            this.newProgressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.newProgressBar.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.newProgressBar.ForeColor = System.Drawing.Color.Maroon;
-            this.newProgressBar.Location = new System.Drawing.Point(0, 0);
-            this.newProgressBar.Margin = new System.Windows.Forms.Padding(0);
-            this.newProgressBar.MarqueeAnimationSpeed = 500;
-            this.newProgressBar.MaximumSize = new System.Drawing.Size(0, 8);
-            this.newProgressBar.Name = "newProgressBar";
-            this.newProgressBar.Size = new System.Drawing.Size(984, 2);
-            this.newProgressBar.Step = 1;
-            this.newProgressBar.TabIndex = 4;
-            this.newProgressBar.Value = 70;
-            // 
-            // mainProgressBar
-            // 
-            this.mainProgressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.mainProgressBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.mainProgressBar.ForeColor = System.Drawing.Color.Maroon;
-            this.mainProgressBar.Location = new System.Drawing.Point(0, 0);
-            this.mainProgressBar.Margin = new System.Windows.Forms.Padding(0);
-            this.mainProgressBar.MarqueeAnimationSpeed = 500;
-            this.mainProgressBar.MaximumSize = new System.Drawing.Size(0, 8);
-            this.mainProgressBar.Name = "mainProgressBar";
-            this.mainProgressBar.Size = new System.Drawing.Size(984, 2);
-            this.mainProgressBar.Step = 1;
-            this.mainProgressBar.TabIndex = 4;
-            this.mainProgressBar.Value = 70;
-
-            
+            this.newProgressBar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.newProgressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.newProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(143)))), ((int)(((byte)(250)))));
+            this.newProgressBar1.Location = new System.Drawing.Point(0, 28);
+            this.newProgressBar1.Name = "newProgressBar1";
+            this.newProgressBar1.Size = new System.Drawing.Size(984, 8);
+            this.newProgressBar1.Step = 1;
+            this.newProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.newProgressBar1.TabIndex = 5;
+            this.newProgressBar1.Value = 70;
             // 
             // Form2
             // 
             this.ClientSize = new System.Drawing.Size(984, 36);
-            this.Controls.Add(this.mainProgressBar);
-            this.Controls.Add(this.newProgressBar);
+            this.Controls.Add(this.newProgressBar1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -174,8 +152,7 @@ namespace DFA
         private Label label3;
         private Label label4;
         private Label label5;
-        private ProgressBar mainProgressBar;
-        private NewProgressBar newProgressBar;
+        private NewProgressBar newProgressBar1;
     }
 }
 
