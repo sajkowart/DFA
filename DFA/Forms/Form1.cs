@@ -24,40 +24,6 @@ namespace DFA
 
         public IntPtr HWnd { get; set; }
 
-        public string Label1
-        {
-            get
-            {
-                return this.label1.Text;
-            }
-            set
-            {
-                this.label1.Text = value;
-            }
-        }
-        public string Label2
-        {
-            get
-            {
-                return this.label2.Text;
-            }
-            set
-            {
-                this.label2.Text = value;
-            }
-        }
-        public string Label3
-        {
-            get
-            {
-                return this.label3.Text;
-            }
-            set
-            {
-                this.label3.Text = value;
-            }
-        }
-
 
         [StructLayout(LayoutKind.Sequential)]
         public struct RAWINPUTDEVICE
@@ -91,9 +57,6 @@ namespace DFA
         private void Form1_Load(object sender, EventArgs e)
         {
 
-
-            label4.Parent = pictureBox1;
-            label4.BackColor = Color.Transparent;
 
 
             
@@ -129,11 +92,11 @@ namespace DFA
             //if (RegisterRawInputDevices(rid[1], 1, Convert.ToUInt32(Marshal.SizeOf(rid[1]))) == false)
             if (RegisterRawInputDevices(rid[1], 1, Convert.ToUInt32(Marshal.SizeOf(rid[1]))) == false)
             {
-                Label1 = "registration failed";
+                //Label1 = "registration failed";
             }
             else
             {
-                Label1 = "registration success";
+               // Label1 = "registration success";
 
             }
 
@@ -148,9 +111,9 @@ namespace DFA
         
         private void timer_Tick(object sender, EventArgs e)
         {
-            Label2 =  DateTime.Now.Second.ToString() + ": " + msg;
+           // Label2 =  DateTime.Now.Second.ToString() + ": " + msg;
 
-            Label3 = msgFromInput;
+           // Label3 = msgFromInput;
             this.InvokePaint(this, new PaintEventArgs(this.CreateGraphics(), this.DisplayRectangle));
 
         }
@@ -195,6 +158,11 @@ namespace DFA
         }
 
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void newProgressBar1_Click(object sender, EventArgs e)
         {
 
         }

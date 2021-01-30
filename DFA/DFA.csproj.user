@@ -2,20 +2,20 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="Class1.cs">
+    <Compile Update="Controls\CustomLabel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="CustomLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Form1.cs">
+    <Compile Update="Forms\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Form2.cs">
+    <Compile Update="Forms\Form2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="NewProgressBar.cs">
+    <Compile Update="Controls\NewProgressBar.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Forms\TestingForm.cs">
+      <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
 </Project>

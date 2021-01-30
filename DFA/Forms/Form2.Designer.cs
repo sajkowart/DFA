@@ -35,21 +35,23 @@ namespace DFA
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.timeLabelText = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.newProgressBar1 = new DFA.NewProgressBar();
+            this.mainProgressBar = new DFA.NewProgressBar();
+            this.topMostProgressBar = new DFA.NewProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(984, 36);
+            this.pictureBox1.Size = new System.Drawing.Size(1000, 40);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -65,16 +67,17 @@ namespace DFA
             this.label1.TabIndex = 1;
             this.label1.Text = "label1";
             // 
-            // label2
+            // timeLabelText
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
-            this.label2.Location = new System.Drawing.Point(328, 6);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 15);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "label2";
+            this.timeLabelText.AutoSize = true;
+            this.timeLabelText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.timeLabelText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
+            this.timeLabelText.Location = new System.Drawing.Point(328, 6);
+            this.timeLabelText.Name = "timeLabelText";
+            this.timeLabelText.Size = new System.Drawing.Size(80, 15);
+            this.timeLabelText.TabIndex = 2;
+            this.timeLabelText.Text = "timeLabelText";
+            this.timeLabelText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
@@ -109,32 +112,56 @@ namespace DFA
             this.label5.TabIndex = 3;
             this.label5.Text = "label5";
             // 
-            // newProgressBar1
+            // mainProgressBar
             // 
-            this.newProgressBar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.newProgressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.newProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(143)))), ((int)(((byte)(250)))));
-            this.newProgressBar1.Location = new System.Drawing.Point(0, 28);
-            this.newProgressBar1.Name = "newProgressBar1";
-            this.newProgressBar1.Size = new System.Drawing.Size(984, 8);
-            this.newProgressBar1.Step = 1;
-            this.newProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.newProgressBar1.TabIndex = 5;
-            this.newProgressBar1.Value = 70;
+            this.mainProgressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.mainProgressBar.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.mainProgressBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
+            this.mainProgressBar.Location = new System.Drawing.Point(0, 32);
+            this.mainProgressBar.Maximum = 10000;
+            this.mainProgressBar.Name = "mainProgressBar";
+            this.mainProgressBar.Size = new System.Drawing.Size(1000, 8);
+            this.mainProgressBar.Step = 1;
+            this.mainProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.mainProgressBar.TabIndex = 5;
+            this.mainProgressBar.Value = 1010;
+            // 
+            // topMostProgressBar
+            // 
+            this.topMostProgressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.topMostProgressBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.topMostProgressBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
+            this.topMostProgressBar.Location = new System.Drawing.Point(0, 0);
+            this.topMostProgressBar.Margin = new System.Windows.Forms.Padding(0);
+            this.topMostProgressBar.MaximumSize = new System.Drawing.Size(0, 2);
+            this.topMostProgressBar.Name = "topMostProgressBar";
+            this.topMostProgressBar.Size = new System.Drawing.Size(1000, 1);
+            this.topMostProgressBar.Step = 1;
+            this.topMostProgressBar.TabIndex = 6;
+            this.topMostProgressBar.Value = 50;
             // 
             // Form2
             // 
-            this.ClientSize = new System.Drawing.Size(984, 36);
-            this.Controls.Add(this.newProgressBar1);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoSize = true;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.ClientSize = new System.Drawing.Size(1000, 40);
+            this.ControlBox = false;
+            this.Controls.Add(this.topMostProgressBar);
+            this.Controls.Add(this.mainProgressBar);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.timeLabelText);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(1000, 100);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(1000, 40);
             this.Name = "Form2";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -148,11 +175,12 @@ namespace DFA
         #endregion
         private PictureBox pictureBox1;
         private Label label1;
-        private Label label2;
+        private Label timeLabelText;
         private Label label3;
         private Label label4;
         private Label label5;
-        private NewProgressBar newProgressBar1;
+        private NewProgressBar mainProgressBar;
+        private NewProgressBar topMostProgressBar;
     }
 }
 

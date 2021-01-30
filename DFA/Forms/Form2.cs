@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,15 +47,16 @@ namespace DFA
         private const int WM_NCHITTEST = 0x84;
         private const int HTCLIENT = 0x1;
         private const int HTCAPTION = 0x2;
-
         public const int WM_NCLBUTTONDOWN = 0xA1;
-        
-        public const int HT_CAPTION = 0x2;
-        
+
+
         int penTrackingResetCounter;
-        int penTrackingResetCounterLimit = 5;
+        int penTrackingResetCounterLimitAsOfPenTrackingErrorOffset = 3;
         String msg;
         String msgFromInput;
+
+        int refreshTimerInMiliseconds = 50;//==1sec, 10 * 1000 = 10 secs , 100 = ,1 sec
+        bool isArtistActive = false;
 
         private NotifyIcon trayIcon;
 
@@ -74,8 +76,16 @@ namespace DFA
 
 
             HWnd = this.Handle;
+            RegisterTabletDevice();
+
+            CreateArtistActiveTimer();
+
+        }
 
 
+
+        private void RegisterTabletDevice()
+        {
             RAWINPUTDEVICE[] rid = new RAWINPUTDEVICE[2];
             rid[0].usUsagePage = 0x000D;
             rid[0].usUsage = 0x0000; //01 for external, 02 for integrated
@@ -97,36 +107,29 @@ namespace DFA
                 label1.Text = "registration success";
 
             }
-
-            Timer timer = new Timer();
-            timer.Interval = (1 * 100); // 10 * 1000 = 10 secs
-            timer.Tick += new EventHandler(TimerTick);
-            timer.Start();
-
-
         }
 
-
-
-        private void Form2_Load(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
-
             label1.Parent = pictureBox1;
-            label2.Parent = pictureBox1;
+            timeLabelText.Parent = pictureBox1;
             label3.Parent = pictureBox1;
             label4.Parent = pictureBox1;
             label5.Parent = pictureBox1;
 
-        }
-        protected override void OnLoad(EventArgs e)
-        {
+            //setting height through code becuase designer counts with the window itself//nvm
+            //this.MaximumSize = new Size(this.Size.Width, MinimumSize.Height);
+
 
             this.ControlBox = false;
-            this.Text = String.Empty;
+            this.Text = "DFA";
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 
-            base.OnLoad(e);
+            startingTime = DateTime.Now;
+            lastStopTime = DateTime.Now;
 
+
+            base.OnLoad(e);
         }
 
 
@@ -135,7 +138,7 @@ namespace DFA
             if (e.Button == MouseButtons.Right)
             {
                 ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
 
             }
 
@@ -166,8 +169,6 @@ namespace DFA
         public int DefaultWindowX => Screen.FromControl(this).WorkingArea.Width / 2;
         public int DefaultWindowY => 0;
 
-      
-
         public void CreateTrayMenu()
         {
 
@@ -196,26 +197,19 @@ namespace DFA
 
 
         }
-
-       
-
         private void TrayResetPosition(object sender, EventArgs e)
         {
             ResetWindowPosition();
         }
-
         private void OnExitClicked(object sender, EventArgs e)
         {
             trayIcon.Visible = false;
             Application.Exit();
         }
-
         private void TrayIconClicked(object sender, EventArgs e)
         {
             // MessageBox.Show("cl");
         }
-
-
         public void ResetWindowPosition()
         {
             StartPosition = FormStartPosition.Manual;
@@ -223,7 +217,6 @@ namespace DFA
 
             this.Location = new Point(DefaultWindowX, DefaultWindowY);
         }
-
         private void LoadWindowPosition()
         {
 
@@ -250,17 +243,104 @@ namespace DFA
         }
 
 
-        private void TimerTick(object sender, EventArgs e)
-        {
-            label2.Text = DateTime.Now.Second.ToString() + ": " + msg;
+        public DateTime startingTime;
+        public TimeSpan differenceOnStopTimeFromLastStopTime;
+        public DateTime lastStopTime;
+        public DateTime activatedFullTime;
+        public bool UpdatedDifferenceOnStop = false;
+        public bool ShowActiveTimeInSeconds = false;
 
-            label3.Text = msgFromInput;
+        public float currentMainBarProgress;
+        public float maxMainBarProgress;
+        public int timeSecToFillMainBar = 5;
+
+
+        public int graphicalProgressBarUpdateInMiliseconds = 5;
+
+
+        private void CreateArtistActiveTimer()
+        {
+            Timer timerArtistActive = new Timer();
+            timerArtistActive.Interval = (refreshTimerInMiliseconds);
+            timerArtistActive.Tick += new EventHandler(TimerArtistActiveTick);
+            timerArtistActive.Start();
+
+            maxMainBarProgress = 5 * 1000 / refreshTimerInMiliseconds;
+
+            Timer timerProgressBarsUpdate = new Timer();
+            timerProgressBarsUpdate.Interval = graphicalProgressBarUpdateInMiliseconds;
+            timerProgressBarsUpdate.Tick += new EventHandler(TimerUpdateProgressBarsGraphically);
+            timerProgressBarsUpdate.Start();
+        }
+
+        float currentVisualProgressOfLerp=0;
+
+        private void TimerUpdateProgressBarsGraphically(object sender, EventArgs e)
+        {
+
+            currentVisualProgressOfLerp = Lerp(currentVisualProgressOfLerp, currentMainBarProgress, (float)0.1);
+            mainProgressBar.Value = ToSmoothProgressBarProcentage(currentVisualProgressOfLerp, 0,maxMainBarProgress);
+                //ToSmoothProgressBarProcentage(currentMainBarProgress, 0, maxMainBarProgress);
 
         }
 
-      
+       
+        private void TimerArtistActiveTick(object sender, EventArgs e)
+        {
+            if (!isArtistActive)
+            {
+                if (currentMainBarProgress > 0)
+                    currentMainBarProgress--;
 
-        
+                if (!UpdatedDifferenceOnStop)
+                {
+                    //differenceOnStopTimeFromLastStopTime = DateTime.Now - lastStopTime;
+                    //lastStopTime = DateTime.Now;
+
+
+
+                    UpdatedDifferenceOnStop = true;
+
+                    //todo confimation test
+                    // activatedFullTime = activatedFullTime + differenceOnStopTimeFromLastStopTime;
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+
+                activatedFullTime += TimeSpan.FromMilliseconds(refreshTimerInMiliseconds);
+
+                if (currentMainBarProgress < 0)
+                    currentMainBarProgress = 0;
+                else if (currentMainBarProgress < maxMainBarProgress)
+                    currentMainBarProgress++;
+                else
+                    currentMainBarProgress = 0;
+
+
+
+
+
+                if (ShowActiveTimeInSeconds)
+                {
+                    timeLabelText.Text = activatedFullTime.Second.ToString();
+                }
+                else
+                    timeLabelText.Text = activatedFullTime.ToLongTimeString().ToString();
+
+                label3.Text = msgFromInput;
+            }
+
+
+        }
+
+
+
+
 
         [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
         protected override void WndProc(ref Message message)
@@ -279,14 +359,15 @@ namespace DFA
 
                     msgFromInput = message.LParam.ToString();
                     penTrackingResetCounter = 0;
-
+                    isArtistActive = true;
                     break;
 
                 default:
                     penTrackingResetCounter++;
 
-                    if (penTrackingResetCounter > penTrackingResetCounterLimit)
+                    if (penTrackingResetCounter > penTrackingResetCounterLimitAsOfPenTrackingErrorOffset)
                     {
+                        isArtistActive = false;
                         msgFromInput = "";
                         penTrackingResetCounter = 0;
                     }
@@ -313,5 +394,34 @@ namespace DFA
             base.OnFormClosed(e);
 
         }
+
+        private int ToSmoothProgressBarProcentage(float current, float min, float max)
+        {
+            var range = max - min;
+            var correctedStartVal = current - min;
+
+            return (int)((correctedStartVal * 10000) / range);
+        }
+
+        private float ToProcentage(float current, float min, float max)
+        {
+            var range = max - min;
+            var correctedStartVal = current - min;
+
+            return (correctedStartVal * 100) / range;
+        }
+
+        float Lerp(float firstFloat, float secondFloat, float by)
+        {
+            return firstFloat + (secondFloat - firstFloat) * by;
+        }
+
+        System.Numerics.Vector2 Lerp(Vector2 firstVector, Vector2 secondVector, float by)
+        {
+            float retX = Lerp(firstVector.X, secondVector.X, by);
+            float retY = Lerp(firstVector.Y, secondVector.Y, by);
+            return new Vector2(retX, retY);
+        }
+
     }
 }
