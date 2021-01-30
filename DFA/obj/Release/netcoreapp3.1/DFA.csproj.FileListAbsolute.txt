@@ -1,0 +1,14 @@
+C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Release\netcoreapp3.1\DFA.exe
+C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Release\netcoreapp3.1\DFA.deps.json
+C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Release\netcoreapp3.1\DFA.runtimeconfig.json
+C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Release\netcoreapp3.1\DFA.runtimeconfig.dev.json
+C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Release\netcoreapp3.1\DFA.dll
+C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Release\netcoreapp3.1\DFA.pdb
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.Form1.resources
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.csproj.GenerateResource.cache
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.AssemblyInfoInputs.cache
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.AssemblyInfo.cs
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.csproj.CoreCompileInputs.cache
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.dll
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.pdb
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.genruntimeconfig.cache
