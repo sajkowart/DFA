@@ -33,91 +33,40 @@ namespace DFA
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBoxParent = new System.Windows.Forms.PictureBox();
+            this.mainProgressBar = new DFA.NewProgressBar();
+            this.topMostProgressBar = new DFA.NewProgressBar();
+            this.flowLayoutPanelParent = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutMiddle = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.timeLabelText = new System.Windows.Forms.Label();
+            this.label2TimeLabelText = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.mainProgressBar = new DFA.NewProgressBar();
-            this.topMostProgressBar = new DFA.NewProgressBar();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxParent)).BeginInit();
+            this.flowLayoutPanelParent.SuspendLayout();
+            this.flowLayoutMiddle.SuspendLayout();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // pictureBoxParent
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1000, 40);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
-            this.label1.Location = new System.Drawing.Point(185, 6);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "label1";
-            // 
-            // timeLabelText
-            // 
-            this.timeLabelText.AutoSize = true;
-            this.timeLabelText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.timeLabelText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
-            this.timeLabelText.Location = new System.Drawing.Point(328, 6);
-            this.timeLabelText.Name = "timeLabelText";
-            this.timeLabelText.Size = new System.Drawing.Size(80, 15);
-            this.timeLabelText.TabIndex = 2;
-            this.timeLabelText.Text = "timeLabelText";
-            this.timeLabelText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
-            this.label3.Location = new System.Drawing.Point(457, 6);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 15);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "label3";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
-            this.label4.Location = new System.Drawing.Point(576, 6);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(38, 15);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "label4";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
-            this.label5.Location = new System.Drawing.Point(664, 6);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 15);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "label5";
+            this.pictureBoxParent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.pictureBoxParent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBoxParent.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxParent.Image")));
+            this.pictureBoxParent.Location = new System.Drawing.Point(0, 0);
+            this.pictureBoxParent.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBoxParent.Name = "pictureBoxParent";
+            this.pictureBoxParent.Size = new System.Drawing.Size(1000, 40);
+            this.pictureBoxParent.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBoxParent.TabIndex = 0;
+            this.pictureBoxParent.TabStop = false;
             // 
             // mainProgressBar
             // 
             this.mainProgressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.mainProgressBar.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.mainProgressBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
-            this.mainProgressBar.Location = new System.Drawing.Point(0, 32);
+            this.mainProgressBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(147)))), ((int)(((byte)(216)))));
+            this.mainProgressBar.Location = new System.Drawing.Point(0, 27);
+            this.mainProgressBar.Margin = new System.Windows.Forms.Padding(0);
             this.mainProgressBar.Maximum = 10000;
             this.mainProgressBar.Name = "mainProgressBar";
             this.mainProgressBar.Size = new System.Drawing.Size(1000, 8);
@@ -129,33 +78,137 @@ namespace DFA
             // topMostProgressBar
             // 
             this.topMostProgressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.topMostProgressBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.topMostProgressBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
+            this.topMostProgressBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.topMostProgressBar.ForeColor = System.Drawing.Color.PaleGreen;
             this.topMostProgressBar.Location = new System.Drawing.Point(0, 0);
             this.topMostProgressBar.Margin = new System.Windows.Forms.Padding(0);
-            this.topMostProgressBar.MaximumSize = new System.Drawing.Size(0, 2);
+            this.topMostProgressBar.Maximum = 10000;
+            this.topMostProgressBar.MaximumSize = new System.Drawing.Size(1000, 2);
+            this.topMostProgressBar.MinimumSize = new System.Drawing.Size(1000, 2);
             this.topMostProgressBar.Name = "topMostProgressBar";
-            this.topMostProgressBar.Size = new System.Drawing.Size(1000, 1);
+            this.topMostProgressBar.Size = new System.Drawing.Size(1000, 2);
             this.topMostProgressBar.Step = 1;
             this.topMostProgressBar.TabIndex = 6;
-            this.topMostProgressBar.Value = 50;
+            this.topMostProgressBar.Value = 5000;
+            // 
+            // flowLayoutPanelParent
+            // 
+            this.flowLayoutPanelParent.AutoSize = true;
+            this.flowLayoutPanelParent.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanelParent.Controls.Add(this.topMostProgressBar);
+            this.flowLayoutPanelParent.Controls.Add(this.flowLayoutMiddle);
+            this.flowLayoutPanelParent.Controls.Add(this.mainProgressBar);
+            this.flowLayoutPanelParent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanelParent.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanelParent.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanelParent.MinimumSize = new System.Drawing.Size(1000, 20);
+            this.flowLayoutPanelParent.Name = "flowLayoutPanelParent";
+            this.flowLayoutPanelParent.Size = new System.Drawing.Size(1000, 40);
+            this.flowLayoutPanelParent.TabIndex = 7;
+            // 
+            // flowLayoutMiddle
+            // 
+            this.flowLayoutMiddle.AutoSize = true;
+            this.flowLayoutMiddle.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutMiddle.Controls.Add(this.label1);
+            this.flowLayoutMiddle.Controls.Add(this.label2TimeLabelText);
+            this.flowLayoutMiddle.Controls.Add(this.label3);
+            this.flowLayoutMiddle.Controls.Add(this.label4);
+            this.flowLayoutMiddle.Controls.Add(this.label5);
+            this.flowLayoutMiddle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutMiddle.Location = new System.Drawing.Point(0, 2);
+            this.flowLayoutMiddle.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutMiddle.MinimumSize = new System.Drawing.Size(1000, 15);
+            this.flowLayoutMiddle.Name = "flowLayoutMiddle";
+            this.flowLayoutMiddle.Size = new System.Drawing.Size(1000, 25);
+            this.flowLayoutMiddle.TabIndex = 8;
+            this.flowLayoutMiddle.WrapContents = false;
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(147)))), ((int)(((byte)(216)))));
+            this.label1.Location = new System.Drawing.Point(0, 5);
+            this.label1.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.label1.MaximumSize = new System.Drawing.Size(200, 20);
+            this.label1.MinimumSize = new System.Drawing.Size(100, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(200, 15);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "label1";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label2TimeLabelText
+            // 
+            this.label2TimeLabelText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.label2TimeLabelText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(147)))), ((int)(((byte)(216)))));
+            this.label2TimeLabelText.Location = new System.Drawing.Point(200, 5);
+            this.label2TimeLabelText.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.label2TimeLabelText.MaximumSize = new System.Drawing.Size(200, 20);
+            this.label2TimeLabelText.MinimumSize = new System.Drawing.Size(100, 15);
+            this.label2TimeLabelText.Name = "label2TimeLabelText";
+            this.label2TimeLabelText.Size = new System.Drawing.Size(200, 15);
+            this.label2TimeLabelText.TabIndex = 2;
+            this.label2TimeLabelText.Text = "TimeLabelText";
+            this.label2TimeLabelText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label3
+            // 
+            this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(147)))), ((int)(((byte)(216)))));
+            this.label3.Location = new System.Drawing.Point(400, 5);
+            this.label3.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.label3.MaximumSize = new System.Drawing.Size(200, 20);
+            this.label3.MinimumSize = new System.Drawing.Size(100, 15);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(200, 15);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "label3";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(147)))), ((int)(((byte)(216)))));
+            this.label4.Location = new System.Drawing.Point(600, 5);
+            this.label4.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.label4.MaximumSize = new System.Drawing.Size(200, 20);
+            this.label4.MinimumSize = new System.Drawing.Size(100, 15);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(200, 15);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "label4";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label4.UseCompatibleTextRendering = true;
+            // 
+            // label5
+            // 
+            this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(147)))), ((int)(((byte)(216)))));
+            this.label5.Location = new System.Drawing.Point(800, 5);
+            this.label5.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.label5.MaximumSize = new System.Drawing.Size(200, 20);
+            this.label5.MinimumSize = new System.Drawing.Size(100, 15);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(200, 15);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "label5";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(1000, 40);
             this.ControlBox = false;
-            this.Controls.Add(this.topMostProgressBar);
-            this.Controls.Add(this.mainProgressBar);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.timeLabelText);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.flowLayoutPanelParent);
+            this.Controls.Add(this.pictureBoxParent);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -166,21 +219,27 @@ namespace DFA
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.TopMost = true;
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxParent)).EndInit();
+            this.flowLayoutPanelParent.ResumeLayout(false);
+            this.flowLayoutPanelParent.PerformLayout();
+            this.flowLayoutMiddle.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private PictureBox pictureBox1;
+        private PictureBox pictureBoxParent;
+        private NewProgressBar mainProgressBar;
+        private NewProgressBar topMostProgressBar;
+        private FlowLayoutPanel flowLayoutPanelParent;
+
         private Label label1;
-        private Label timeLabelText;
+        private Label label2TimeLabelText;
         private Label label3;
         private Label label4;
         private Label label5;
-        private NewProgressBar mainProgressBar;
-        private NewProgressBar topMostProgressBar;
+        private FlowLayoutPanel flowLayoutMiddle;
     }
 }
 

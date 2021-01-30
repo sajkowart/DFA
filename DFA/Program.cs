@@ -25,7 +25,7 @@ namespace DFA
             var testingForm = new TestingForm();
 
 
-            Application.Run(testingForm);
+            Application.Run(form2);
 
 
         }
