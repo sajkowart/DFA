@@ -51,11 +51,11 @@ namespace DFA
 
 
         int penTrackingResetCounter;
-        int penTrackingResetCounterLimitAsOfPenTrackingErrorOffset = 1;
+        int penTrackingResetCounterLimitAsOfPenTrackingErrorOffset = 3;
         String msg;
         String msgFromInput;
 
-        int refreshTimerInMiliseconds = 50;//, 10 * 1000 = 10 secs , 100 = ,1 sec
+        int refreshTimerInMiliseconds = 50;//==1sec, 10 * 1000 = 10 secs , 100 = ,1 sec
         bool isArtistActive = false;
 
         private NotifyIcon trayIcon;
@@ -289,8 +289,6 @@ namespace DFA
         {
             if (!isArtistActive)
             {
-
-                topMostProgressBar.BackColor = Color.FromArgb(221, 44, 0);
                 if (currentMainBarProgress > 0)
                     currentMainBarProgress--;
 
@@ -313,7 +311,6 @@ namespace DFA
             }
             else
             {
-                topMostProgressBar.BackColor = Color.FromArgb(178, 255, 89);
 
                 activatedFullTime += TimeSpan.FromMilliseconds(refreshTimerInMiliseconds);
 
