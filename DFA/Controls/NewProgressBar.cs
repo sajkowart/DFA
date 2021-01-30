@@ -45,8 +45,9 @@ namespace DFA
                     if (fillRect.Width == 0) fillRect.Width = 1; // Can't draw rec with width of 0.
                     //20; 20; 20    187; 143; 206
                     //LinearGradientBrush brush = new LinearGradientBrush(rect, this.BackColor, this.ForeColor, LinearGradientMode.Vertical);
-                    LinearGradientBrush brush = new LinearGradientBrush(fillRect, Color.FromArgb(220, 143, 250), this.ForeColor, LinearGradientMode.Vertical);
-                    
+                   // LinearGradientBrush brush = new LinearGradientBrush(fillRect, Color.FromArgb(220, 143, 250), this.ForeColor, LinearGradientMode.Vertical);
+                    SolidBrush brush = new SolidBrush(ForeColor);
+
                     offscreen.FillRectangle(brush, inset, inset, fillRect.Width, fillRect.Height);
 
                     e.Graphics.DrawImage(offscreenImage, 0, 0);
