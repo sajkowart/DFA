@@ -111,14 +111,7 @@ namespace DFA
 
         protected override void OnLoad(EventArgs e)
         {
-            //label1.Parent = pictureBox1;
-            //timeLabelText.Parent = pictureBox1;
-            //label3.Parent = pictureBox1;
-            //label4.Parent = pictureBox1;
-            //label5.Parent = pictureBox1;
-
-            //setting height through code becuase designer counts with the window itself//nvm
-            //this.MaximumSize = new Size(this.Size.Width, MinimumSize.Height);
+            
 
 
             this.ControlBox = false;
@@ -133,38 +126,6 @@ namespace DFA
         }
 
 
-        private void Form2_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
-
-            }
-
-        }
-
-        private void Form2_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                RegistryKey key;
-                key = Registry.CurrentUser.OpenSubKey("DFA", true);
-                if (key == null)
-                    key = Registry.CurrentUser.CreateSubKey("DFA", true);
-
-                int x = this.Location.X;
-                int y = this.Location.Y;
-                key.SetValue("DFAMainWindowPositionX", x);
-                key.SetValue("DFAMainWindowPositionY", y);
-
-
-
-                key.Close();
-
-            }
-
-        }
 
         public int DefaultWindowX => Screen.FromControl(this).WorkingArea.Width / 2;
         public int DefaultWindowY => 0;
@@ -279,7 +240,7 @@ namespace DFA
         {
 
             currentVisualProgressOfLerp = Lerp(currentVisualProgressOfLerp, currentMainBarProgress, (float)0.1);
-            mainProgressBar.Value = ToSmoothProgressBarProcentage(currentVisualProgressOfLerp, 0,maxMainBarProgress);
+            progressBarBottomMost.Value = ToSmoothProgressBarProcentage(currentVisualProgressOfLerp, 0,maxMainBarProgress);
             //ToSmoothProgressBarProcentage(currentMainBarProgress, 0, maxMainBarProgress);
 
 
@@ -294,7 +255,7 @@ namespace DFA
             if (!isArtistActive)
             {
 
-                topMostProgressBar.BackColor = Color.FromArgb(221, 44, 0);
+                progressBarTopMost.BackColor = Color.FromArgb(221, 44, 0);
                 if (currentMainBarProgress > 0)
                     currentMainBarProgress--;
 
@@ -317,7 +278,7 @@ namespace DFA
             }
             else
             {
-                topMostProgressBar.BackColor = Color.FromArgb(178, 255, 89);
+                progressBarTopMost.BackColor = Color.FromArgb(178, 255, 89);
 
                 activatedFullTime += TimeSpan.FromMilliseconds(refreshTimerInMiliseconds);
 
@@ -434,6 +395,59 @@ namespace DFA
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void FormDrawOver(object sender, DragEventArgs e)
+        {
+            label5.Text = "drag over";
+        }
+
+        private void FormMouseHover(object sender, EventArgs e)
+        {
+            label5.Text = "FormMouseHover";
+            
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+            label5.Text = "lab5 click " + e.ToString();
+            
+
+        }
+
+
+        private void FormMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+
+            }
+            label5.Text = "mouseclick " + e.Button.ToString();
+
+        }
+
+        private void FormMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                RegistryKey key;
+                key = Registry.CurrentUser.OpenSubKey("DFA", true);
+                if (key == null)
+                    key = Registry.CurrentUser.CreateSubKey("DFA", true);
+
+                int x = this.Location.X;
+                int y = this.Location.Y;
+                key.SetValue("DFAMainWindowPositionX", x);
+                key.SetValue("DFAMainWindowPositionY", y);
+
+
+
+                key.Close();
+
+            }
 
         }
     }
