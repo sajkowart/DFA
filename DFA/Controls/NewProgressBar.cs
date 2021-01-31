@@ -51,6 +51,8 @@ namespace DFA
                     offscreen.FillRectangle(brush, inset, inset, fillRect.Width, fillRect.Height);
 
                     e.Graphics.DrawImage(offscreenImage, 0, 0);
+                    e.Dispose();
+                    e.Graphics.Dispose();
                 }
             }
         }

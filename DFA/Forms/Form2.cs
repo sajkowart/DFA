@@ -71,8 +71,8 @@ namespace DFA
             this.TopMost = true;
 
 
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(Form2_MouseDown);
-            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(Form2_MouseUp);
+           // this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(Form2_MouseDown);
+           // this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(Form2_MouseUp);
 
 
             HWnd = this.Handle;
@@ -111,11 +111,11 @@ namespace DFA
 
         protected override void OnLoad(EventArgs e)
         {
-            label1.Parent = pictureBox1;
-            timeLabelText.Parent = pictureBox1;
-            label3.Parent = pictureBox1;
-            label4.Parent = pictureBox1;
-            label5.Parent = pictureBox1;
+            //label1.Parent = pictureBox1;
+            //timeLabelText.Parent = pictureBox1;
+            //label3.Parent = pictureBox1;
+            //label4.Parent = pictureBox1;
+            //label5.Parent = pictureBox1;
 
             //setting height through code becuase designer counts with the window itself//nvm
             //this.MaximumSize = new Size(this.Size.Width, MinimumSize.Height);
@@ -280,13 +280,17 @@ namespace DFA
 
             currentVisualProgressOfLerp = Lerp(currentVisualProgressOfLerp, currentMainBarProgress, (float)0.1);
             mainProgressBar.Value = ToSmoothProgressBarProcentage(currentVisualProgressOfLerp, 0,maxMainBarProgress);
-                //ToSmoothProgressBarProcentage(currentMainBarProgress, 0, maxMainBarProgress);
+            //ToSmoothProgressBarProcentage(currentMainBarProgress, 0, maxMainBarProgress);
+
+
 
         }
 
-       
+
         private void TimerArtistActiveTick(object sender, EventArgs e)
         {
+
+            
             if (!isArtistActive)
             {
 
@@ -330,28 +334,19 @@ namespace DFA
 
                 if (ShowActiveTimeInSeconds)
                 {
-                    timeLabelText.Text = activatedFullTime.Second.ToString();
+                    label2TimeLabelText.Text = activatedFullTime.Second.ToString();
                 }
                 else
-                    timeLabelText.Text = activatedFullTime.ToLongTimeString().ToString();
+                    label2TimeLabelText.Text = activatedFullTime.ToLongTimeString().ToString();
 
                 label3.Text = msgFromInput;
             }
-
+            Invalidate();
 
         }
 
 
-        protected override void OnResizeBegin(EventArgs e)
-        {
-            SuspendLayout();
-            base.OnResizeBegin(e);
-        }
-        protected override void OnResizeEnd(EventArgs e)
-        {
-            ResumeLayout();
-            base.OnResizeEnd(e);
-        }
+
 
 
         [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
@@ -363,33 +358,14 @@ namespace DFA
 
 
 
-
-            
-
-
-
-
             switch (message.Msg)
             {
                 case (int)MsgType.WM_INPUT:
 
-                    msgFromInput = message.LParam.ToString();
-                    penTrackingResetCounter = 0;
                     isArtistActive = true;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    msgFromInput = message.LParam.ToString();
+                    penTrackingResetCounter = 0;
 
 
                     break;
@@ -456,5 +432,9 @@ namespace DFA
             return new Vector2(retX, retY);
         }
 
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
