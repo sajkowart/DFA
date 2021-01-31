@@ -13,7 +13,7 @@ C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\netcoreapp3.1\DFA.genruntimeconfi
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\netcoreapp3.1\DFA.Form1.resources
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\netcoreapp3.1\DFA.csproj.GenerateResource.cache
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\netcoreapp3.1\DFA.Properties.Resources.resources
-C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\netcoreapp3.1\DFA.Form2.resources
 C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Debug\netcoreapp3.1\Resources\AppIcon.ico
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\netcoreapp3.1\DFA.TestingForm.resources
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\netcoreapp3.1\DFA.csprojAssemblyReference.cache
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\netcoreapp3.1\DFA.MainForm.resources

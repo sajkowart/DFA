@@ -16,7 +16,7 @@ using System.Windows.Forms;
 namespace DFA
 {
 
-    public partial class Form2 : Form
+    public partial class MainForm : Form
     {
         [DllImport("user32.dll")]
         public static extern IntPtr GetActiveWindow();
@@ -48,6 +48,8 @@ namespace DFA
         private const int HTCLIENT = 0x1;
         private const int HTCAPTION = 0x2;
         public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int WM_NCRBUTTONDOWN = 0xA4;
+        public const int WM_RBUTTONDOWN = 0x0204;
 
 
         int penTrackingResetCounter;
@@ -60,7 +62,7 @@ namespace DFA
 
         private NotifyIcon trayIcon;
 
-        public Form2()
+        public MainForm()
         {
 
             InitializeComponent();
@@ -71,8 +73,8 @@ namespace DFA
             this.TopMost = true;
 
 
-           // this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(Form2_MouseDown);
-           // this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(Form2_MouseUp);
+            // this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(Form2_MouseDown);
+            // this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(Form2_MouseUp);
 
 
             HWnd = this.Handle;
@@ -111,7 +113,7 @@ namespace DFA
 
         protected override void OnLoad(EventArgs e)
         {
-            
+
 
 
             this.ControlBox = false;
@@ -234,13 +236,13 @@ namespace DFA
             timerProgressBarsUpdate.Start();
         }
 
-        float currentVisualProgressOfLerp=0;
+        float currentVisualProgressOfLerp = 0;
 
         private void TimerUpdateProgressBarsGraphically(object sender, EventArgs e)
         {
 
             currentVisualProgressOfLerp = Lerp(currentVisualProgressOfLerp, currentMainBarProgress, (float)0.1);
-            progressBarBottomMost.Value = ToSmoothProgressBarProcentage(currentVisualProgressOfLerp, 0,maxMainBarProgress);
+            progressBarBottomMost.Value = ToSmoothProgressBarProcentage(currentVisualProgressOfLerp, 0, maxMainBarProgress);
             //ToSmoothProgressBarProcentage(currentMainBarProgress, 0, maxMainBarProgress);
 
 
@@ -251,7 +253,7 @@ namespace DFA
         private void TimerArtistActiveTick(object sender, EventArgs e)
         {
 
-            
+
             if (!isArtistActive)
             {
 
@@ -400,41 +402,79 @@ namespace DFA
 
         private void FormDrawOver(object sender, DragEventArgs e)
         {
-            label5.Text = "drag over";
         }
 
         private void FormMouseHover(object sender, EventArgs e)
         {
-            label5.Text = "FormMouseHover";
-            
+
         }
 
         private void label5_Click(object sender, EventArgs e)
         {
-            label5.Text = "lab5 click " + e.ToString();
-            
+
 
         }
+        public bool isMouseDown = false;
+        public bool isLMouseDown = false;
+        public bool isRMouseDown = false;
 
+        public int mouseX;
+        public int mouseY;
+        public int mouseinX;
+        public int mouseinY;
 
         private void FormMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
+
+            isMouseDown = true;
+
+            if (e.Button == MouseButtons.Left)
+                isLMouseDown = true;
+
             if (e.Button == MouseButtons.Right)
             {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+                isRMouseDown = true;
+                label5.Text = "FormMouseDown " + e.Button.ToString();
+
+                mouseinX = MousePosition.X - Bounds.X;
+                mouseinY = MousePosition.Y - Bounds.Y;
+
+                //ReleaseCapture();
+                //SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
 
             }
-            label5.Text = "FormMouseDown " + e.Button.ToString();
 
         }
+
+        private void FormMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (isMouseDown)
+            {
+
+
+                mouseX = MousePosition.X - mouseinX;
+                mouseY = MousePosition.Y - mouseinY;
+
+                this.SetDesktopLocation(mouseX, mouseY);
+
+            }
+        }
+
 
         private void FormMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             label5.Text = "FormMouseUp " + e.Button.ToString();
 
+
+            if (Control.MouseButtons == MouseButtons.None)
+                isMouseDown = false;
+
+            if (e.Button == MouseButtons.Left)
+                isLMouseDown = false;
+
             if (e.Button == MouseButtons.Right)
             {
+                isRMouseDown = false;
                 RegistryKey key;
                 key = Registry.CurrentUser.OpenSubKey("DFA", true);
                 if (key == null)

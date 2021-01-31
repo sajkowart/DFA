@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace DFA
 {
-    partial class Form2
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -32,7 +32,7 @@ namespace DFA
 
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.label1 = new System.Windows.Forms.Label();
             this.label2TimeLabelText = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -58,6 +58,9 @@ namespace DFA
             this.label1.TabIndex = 1;
             this.label1.Text = "label1";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
+            this.label1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseMove);
+            this.label1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
             // 
             // label2TimeLabelText
             // 
@@ -72,6 +75,9 @@ namespace DFA
             this.label2TimeLabelText.TabIndex = 2;
             this.label2TimeLabelText.Text = "timeLabelText";
             this.label2TimeLabelText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label2TimeLabelText.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
+            this.label2TimeLabelText.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseMove);
+            this.label2TimeLabelText.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
             // 
             // label3
             // 
@@ -86,6 +92,9 @@ namespace DFA
             this.label3.TabIndex = 3;
             this.label3.Text = "label3";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
+            this.label3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
+            this.label3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
             // 
             // label4
             // 
@@ -101,6 +110,9 @@ namespace DFA
             this.label4.Text = "label4";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label4.Click += new System.EventHandler(this.label5_Click);
+            this.label4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
+            this.label4.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
+            this.label4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
             // 
             // progressBarBottomMost
             // 
@@ -178,6 +190,7 @@ namespace DFA
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label5.Click += new System.EventHandler(this.label5_Click);
             this.label5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
+            this.label5.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseMove);
             this.label5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
             // 
             // flowLayoutPanel1Parent
@@ -198,7 +211,7 @@ namespace DFA
             this.flowLayoutPanel1Parent.WrapContents = false;
             this.flowLayoutPanel1Parent.MouseHover += new System.EventHandler(this.FormMouseHover);
             // 
-            // Form2
+            // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.AutoSize = true;
@@ -214,12 +227,11 @@ namespace DFA
             this.MaximumSize = new System.Drawing.Size(1000, 100);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(1000, 28);
-            this.Name = "Form2";
+            this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.TopMost = true;
             this.DragOver += new System.Windows.Forms.DragEventHandler(this.FormDrawOver);
-            this.MouseHover += new System.EventHandler(this.FormMouseHover);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1Parent.ResumeLayout(false);
             this.flowLayoutPanel1Parent.PerformLayout();

@@ -20,12 +20,12 @@ namespace DFA
 
 
             var form1 = new Form1();
-            var form2 = new Form2();
+            var mainForm = new MainForm();
 
             var testingForm = new TestingForm();
 
 
-            Application.Run(form2);
+            Application.Run(mainForm);
 
 
         }
