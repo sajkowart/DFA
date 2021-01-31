@@ -61,7 +61,7 @@ namespace DFA
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
-            this.label1.Location = new System.Drawing.Point(185, 6);
+            this.label1.Location = new System.Drawing.Point(119, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 15);
             this.label1.TabIndex = 1;
@@ -72,7 +72,7 @@ namespace DFA
             this.timeLabelText.AutoSize = true;
             this.timeLabelText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.timeLabelText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
-            this.timeLabelText.Location = new System.Drawing.Point(328, 6);
+            this.timeLabelText.Location = new System.Drawing.Point(276, 9);
             this.timeLabelText.Name = "timeLabelText";
             this.timeLabelText.Size = new System.Drawing.Size(80, 15);
             this.timeLabelText.TabIndex = 2;
@@ -84,7 +84,7 @@ namespace DFA
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
-            this.label3.Location = new System.Drawing.Point(457, 6);
+            this.label3.Location = new System.Drawing.Point(494, 9);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(38, 15);
             this.label3.TabIndex = 3;
@@ -95,7 +95,7 @@ namespace DFA
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
-            this.label4.Location = new System.Drawing.Point(576, 6);
+            this.label4.Location = new System.Drawing.Point(679, 9);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(38, 15);
             this.label4.TabIndex = 3;
@@ -106,7 +106,7 @@ namespace DFA
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
-            this.label5.Location = new System.Drawing.Point(664, 6);
+            this.label5.Location = new System.Drawing.Point(863, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(38, 15);
             this.label5.TabIndex = 3;

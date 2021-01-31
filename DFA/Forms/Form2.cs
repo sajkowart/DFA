@@ -355,6 +355,10 @@ namespace DFA
 
 
 
+            
+
+
+
 
             switch (message.Msg)
             {
@@ -363,6 +367,22 @@ namespace DFA
                     msgFromInput = message.LParam.ToString();
                     penTrackingResetCounter = 0;
                     isArtistActive = true;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     break;
 
                 default:
@@ -379,11 +399,12 @@ namespace DFA
 
 
 
+            if (message.Msg == WM_NCHITTEST && (int)message.Result == HTCLIENT)
+                message.Result = (IntPtr)HTCAPTION;
+
 
             base.WndProc(ref message);
 
-            if (message.Msg == WM_NCHITTEST && (int)message.Result == HTCLIENT)
-                message.Result = (IntPtr)HTCAPTION;
         }
 
 

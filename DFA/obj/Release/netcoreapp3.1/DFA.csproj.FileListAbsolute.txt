@@ -12,3 +12,7 @@ C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.csproj.CoreCo
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.dll
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.pdb
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.genruntimeconfig.cache
+C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Release\netcoreapp3.1\Resources\AppIcon.ico
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.Form2.resources
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.TestingForm.resources
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.Properties.Resources.resources
