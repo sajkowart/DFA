@@ -93,7 +93,7 @@ namespace DFA
             this.label3.Text = "label3";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
-            this.label3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
+            this.label3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseMove);
             this.label3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
             // 
             // label4
@@ -109,9 +109,8 @@ namespace DFA
             this.label4.TabIndex = 3;
             this.label4.Text = "label4";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label4.Click += new System.EventHandler(this.label5_Click);
             this.label4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
-            this.label4.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
+            this.label4.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseMove);
             this.label4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
             // 
             // progressBarBottomMost
@@ -188,7 +187,6 @@ namespace DFA
             this.label5.TabIndex = 3;
             this.label5.Text = "label5";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             this.label5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
             this.label5.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseMove);
             this.label5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
@@ -209,7 +207,6 @@ namespace DFA
             this.flowLayoutPanel1Parent.Size = new System.Drawing.Size(1000, 40);
             this.flowLayoutPanel1Parent.TabIndex = 8;
             this.flowLayoutPanel1Parent.WrapContents = false;
-            this.flowLayoutPanel1Parent.MouseHover += new System.EventHandler(this.FormMouseHover);
             // 
             // MainForm
             // 
@@ -231,7 +228,6 @@ namespace DFA
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.TopMost = true;
-            this.DragOver += new System.Windows.Forms.DragEventHandler(this.FormDrawOver);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1Parent.ResumeLayout(false);
             this.flowLayoutPanel1Parent.PerformLayout();

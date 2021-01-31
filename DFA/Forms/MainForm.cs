@@ -395,25 +395,9 @@ namespace DFA
             return new Vector2(retX, retY);
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void FormDrawOver(object sender, DragEventArgs e)
-        {
-        }
-
-        private void FormMouseHover(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label5_Click(object sender, EventArgs e)
-        {
+      
 
 
-        }
         public bool isMouseDown = false;
         public bool isLMouseDown = false;
         public bool isRMouseDown = false;
