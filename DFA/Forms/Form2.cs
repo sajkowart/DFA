@@ -425,12 +425,14 @@ namespace DFA
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
 
             }
-            label5.Text = "mouseclick " + e.Button.ToString();
+            label5.Text = "FormMouseDown " + e.Button.ToString();
 
         }
 
         private void FormMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
+            label5.Text = "FormMouseUp " + e.Button.ToString();
+
             if (e.Button == MouseButtons.Right)
             {
                 RegistryKey key;

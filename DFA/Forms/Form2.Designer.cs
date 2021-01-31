@@ -177,6 +177,8 @@ namespace DFA
             this.label5.Text = "label5";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label5.Click += new System.EventHandler(this.label5_Click);
+            this.label5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
+            this.label5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
             // 
             // flowLayoutPanel1Parent
             // 
