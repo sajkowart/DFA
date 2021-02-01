@@ -22,6 +22,7 @@ namespace DFA
             timerMilestone.Tick += new EventHandler(TimerTick);
             timerMilestone.Start();
 
+            modules = new List<IMilestoneModule>();
             modules.Add(new TimespanMilestoneModule(mainForm));
         }
 

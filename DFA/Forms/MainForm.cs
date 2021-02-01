@@ -100,7 +100,7 @@ namespace DFA
 
 
 
-            CreateMilestones();
+            CreateMilestoneSystem();
 
         }
 
@@ -421,16 +421,11 @@ namespace DFA
 
         MilestoneSystem milestoneSystem;
 
-        private void CreateMilestones()
+        private void CreateMilestoneSystem()
         {
             milestoneSystem = new MilestoneSystem(this);
 
         }
-
-
-
-
-
 
 
 
