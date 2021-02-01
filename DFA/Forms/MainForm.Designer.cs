@@ -128,7 +128,7 @@ namespace DFA
             this.progressBarBottomMost.Step = 1;
             this.progressBarBottomMost.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBarBottomMost.TabIndex = 5;
-            this.progressBarBottomMost.Value = 1010;
+            this.progressBarBottomMost.Value = 20;
             // 
             // progressBarTopMost
             // 
@@ -225,6 +225,7 @@ namespace DFA
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(1000, 28);
             this.Name = "MainForm";
+            this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.TopMost = true;

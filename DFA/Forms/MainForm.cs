@@ -23,9 +23,13 @@ namespace DFA
 
         [DllImport("user32.dll")]
         public static extern bool RegisterRawInputDevices(RAWINPUTDEVICE pRawInputDevices, uint uiNumDevices, uint cbSize);
-        [DllImportAttribute("user32.dll")]
+        [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        [DllImportAttribute("user32.dll")]
+
+        [DllImport("user32.dll")]
+        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
 
         public IntPtr HWnd { get; set; }
@@ -43,6 +47,9 @@ namespace DFA
             WM_INPUT = 0x00FF
 
         }
+        public int DefaultWindowX => Screen.FromControl(this).WorkingArea.Width / 2;
+        public int DefaultWindowY => 0;
+
 
         private const int WM_NCHITTEST = 0x84;
         private const int HTCLIENT = 0x1;
@@ -50,128 +57,121 @@ namespace DFA
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int WM_NCRBUTTONDOWN = 0xA4;
         public const int WM_RBUTTONDOWN = 0x0204;
-
-
-        int penTrackingResetCounter;
-        int penTrackingResetCounterLimitAsOfPenTrackingErrorOffset = 1;
-        String msg;
+        private const int MilestoneCheckingInterval = 300;
+        int penTrackingResetCounter = 0;
+        int penTrackingResetCounterLimitAsOfPenTrackingErrorOffset = 0;
+        String wndProcMsg;
         String msgFromInput;
 
-        int refreshTimerInMiliseconds = 50;//, 10 * 1000 = 10 secs , 100 = ,1 sec
-        bool isArtistActive = false;
+        int refreshArtistStateTickTimerInMiliseconds = 50;//, 10 * 1000 = 10 secs , 100 = ,1 sec
+
+
+        private static ArtistState currentArtistState = ArtistState.INACTIVE;
+        public static ArtistState ArtistState { get => currentArtistState; set => currentArtistState = value; }
+
+        public static bool ArtistActive
+        {
+            get
+            {
+                return ArtistState == ArtistState.ACTIVE;
+            }
+            set
+            {
+                ArtistState = value ? ArtistState.ACTIVE : ArtistState.INACTIVE;
+            }
+        }
+
 
         private NotifyIcon trayIcon;
 
         public MainForm()
         {
-
             InitializeComponent();
-            CreateTrayMenu();
 
+            CreateTrayMenu();
             LoadWindowPosition();
 
-            this.TopMost = true;
+            this.ControlBox = false;
+            this.Text = "DFA";
 
-
-            // this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(Form2_MouseDown);
-            // this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(Form2_MouseUp);
-
+            startingTime = DateTime.Now;
+            lastStopTime = DateTime.Now;
 
             HWnd = this.Handle;
             RegisterTabletDevice();
 
-            CreateArtistActiveTimer();
+            CreateArtistStateTickTimer();
 
-        }
+            CreateGraphicalTickTimer();
 
+            milestone = new Milestone();
+            CreateMilestoneTimer();
 
-
-        private void RegisterTabletDevice()
-        {
-            RAWINPUTDEVICE[] rid = new RAWINPUTDEVICE[2];
-            rid[0].usUsagePage = 0x000D;
-            rid[0].usUsage = 0x0000; //01 for external, 02 for integrated
-            rid[0].dwFlags = 0x00000100;
-            rid[0].hwndTarget = HWnd;
-
-            rid[1].usUsagePage = 0x000D;
-            rid[1].usUsage = 0x0001; //01 for external, 02 for integrated
-            rid[1].dwFlags = 0x00000100;
-            rid[1].hwndTarget = HWnd;
-
-            //if (RegisterRawInputDevices(rid[1], 1, Convert.ToUInt32(Marshal.SizeOf(rid[1]))) == false)
-            if (RegisterRawInputDevices(rid[1], 1, Convert.ToUInt32(Marshal.SizeOf(rid[1]))) == false)
-            {
-                label1.Text = "registration failed";
-            }
-            else
-            {
-                label1.Text = "registration success";
-
-            }
         }
 
         protected override void OnLoad(EventArgs e)
         {
 
-
-
-            this.ControlBox = false;
-            this.Text = "DFA";
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-
-            startingTime = DateTime.Now;
-            lastStopTime = DateTime.Now;
-
-
             base.OnLoad(e);
         }
 
 
+        private void RegisterTabletDevice()
+        {
+            RAWINPUTDEVICE rid = new RAWINPUTDEVICE();
 
-        public int DefaultWindowX => Screen.FromControl(this).WorkingArea.Width / 2;
-        public int DefaultWindowY => 0;
+            rid.usUsagePage = 0x000D;
+            rid.usUsage = 0x0001; //01 for external, 02 for integrated
+            rid.dwFlags = 0x00000100;
+            rid.hwndTarget = HWnd;
 
+            //if (RegisterRawInputDevices(rid[1], 1, Convert.ToUInt32(Marshal.SizeOf(rid[1]))) == false)
+            if (RegisterRawInputDevices(rid, 1, Convert.ToUInt32(Marshal.SizeOf(rid))) == false)
+            {
+                label1.Text = "registration failed";
+            }
+            else
+            {
+                //      label1.Text = "registration success";
+
+            }
+        }
         public void CreateTrayMenu()
         {
 
             trayIcon = new NotifyIcon();
             trayIcon.Icon = new System.Drawing.Icon("Resources/AppIcon.ico");
             trayIcon.Text = "DFA";
-            trayIcon.Click += TrayIconClicked;
-
+            trayIcon.MouseClick += TrayIconMouseClicked;
 
             trayIcon.ContextMenuStrip = new ContextMenuStrip();
-            trayIcon.ContextMenuStrip.Items.Add("Exit", Image.FromFile("Resources/AppIcon.ico"), OnExitClicked);
-            //label button
+            trayIcon.ContextMenuStrip.Items.Add("Exit", Image.FromFile("Resources/AppIcon.ico"), TrayOnExitClicked);
             trayIcon.ContextMenuStrip.Items.Add(new ToolStripDropDownButton("Settings...", null,
                 new ToolStripLabel("Reset position", null, false, TrayResetPosition)
-                //,new ToolStripLabel("test2")
                 ));
-
-
-
-
-
-
             trayIcon.Visible = true;
-
-
-
-
         }
         private void TrayResetPosition(object sender, EventArgs e)
         {
             ResetWindowPosition();
         }
-        private void OnExitClicked(object sender, EventArgs e)
+        private void TrayOnExitClicked(object sender, EventArgs e)
         {
-            trayIcon.Visible = false;
             Application.Exit();
         }
-        private void TrayIconClicked(object sender, EventArgs e)
+
+        private void TrayIconMouseClicked(object sender, MouseEventArgs e)
         {
-            // MessageBox.Show("cl");
+
+            if (e.Button == MouseButtons.Left)
+            {
+                this.TopMost = !this.TopMost;
+                if (TopMost)
+                    BringToFront();
+                else
+                    SendToBack();
+
+            }
         }
         public void ResetWindowPosition()
         {
@@ -209,139 +209,164 @@ namespace DFA
         public DateTime startingTime;
         public TimeSpan differenceOnStopTimeFromLastStopTime;
         public DateTime lastStopTime;
-        public DateTime activatedFullTime;
+        public TimeSpan activatedFullTime;
         public bool UpdatedDifferenceOnStop = false;
         public bool ShowActiveTimeInSeconds = false;
 
-        public float currentMainBarProgress;
-        public float maxMainBarProgress;
-        public int timeSecToFillMainBar = 5;
 
 
         public int graphicalProgressBarUpdateInMiliseconds = 5;
+        private bool receivedInputFromPenOnLastWndProc = false;
 
 
-        private void CreateArtistActiveTimer()
+        private void CreateArtistStateTickTimer()
         {
             Timer timerArtistActive = new Timer();
-            timerArtistActive.Interval = (refreshTimerInMiliseconds);
-            timerArtistActive.Tick += new EventHandler(TimerArtistActiveTick);
+            timerArtistActive.Interval = (refreshArtistStateTickTimerInMiliseconds);
+            timerArtistActive.Tick += new EventHandler(TimerArtistStateTick);
             timerArtistActive.Start();
-
-            maxMainBarProgress = 5 * 1000 / refreshTimerInMiliseconds;
-
-            Timer timerProgressBarsUpdate = new Timer();
-            timerProgressBarsUpdate.Interval = graphicalProgressBarUpdateInMiliseconds;
-            timerProgressBarsUpdate.Tick += new EventHandler(TimerUpdateProgressBarsGraphically);
-            timerProgressBarsUpdate.Start();
-        }
-
-        float currentVisualProgressOfLerp = 0;
-
-        private void TimerUpdateProgressBarsGraphically(object sender, EventArgs e)
-        {
-
-            currentVisualProgressOfLerp = Lerp(currentVisualProgressOfLerp, currentMainBarProgress, (float)0.1);
-            progressBarBottomMost.Value = ToSmoothProgressBarProcentage(currentVisualProgressOfLerp, 0, maxMainBarProgress);
-            //ToSmoothProgressBarProcentage(currentMainBarProgress, 0, maxMainBarProgress);
-
-
-
         }
 
 
-        private void TimerArtistActiveTick(object sender, EventArgs e)
+        private void TimerArtistStateTick(object sender, EventArgs e)
         {
 
+            bool changed = CheckArtistStateChanged();
 
-            if (!isArtistActive)
+
+
+            if (ArtistState == ArtistState.ACTIVE)
+                OnArtistStateActiveTick();
+            else
+                OnArtistStateInactiveTick();
+
+            Invalidate();
+        }
+
+        private void OnArtistStateActiveActivated()
+        {
+            progressBarTopMost.BackColor = Color.FromArgb(178, 255, 89);
+        }
+
+        private void OnArtistStateActiveTick()
+        {
+            activatedFullTime += TimeSpan.FromMilliseconds(refreshArtistStateTickTimerInMiliseconds);
+
+
+            DisplayTimeActivatedInUI();
+
+        }
+
+        private void DisplayTimeActivatedInUI()
+        {
+            if (ShowActiveTimeInSeconds)
             {
-
-                progressBarTopMost.BackColor = Color.FromArgb(221, 44, 0);
-                if (currentMainBarProgress > 0)
-                    currentMainBarProgress--;
-
-                if (!UpdatedDifferenceOnStop)
-                {
-                    //differenceOnStopTimeFromLastStopTime = DateTime.Now - lastStopTime;
-                    //lastStopTime = DateTime.Now;
-
-
-
-                    UpdatedDifferenceOnStop = true;
-
-                    //todo confimation test
-                    // activatedFullTime = activatedFullTime + differenceOnStopTimeFromLastStopTime;
-                }
-                else
-                {
-
-                }
+                label2TimeLabelText.Text = activatedFullTime.TotalSeconds.ToString().TrimEnd('0', ' ');
             }
             else
             {
-                progressBarTopMost.BackColor = Color.FromArgb(178, 255, 89);
-
-                activatedFullTime += TimeSpan.FromMilliseconds(refreshTimerInMiliseconds);
-
-                if (currentMainBarProgress < 0)
-                    currentMainBarProgress = 0;
-                else if (currentMainBarProgress < maxMainBarProgress)
-                    currentMainBarProgress++;
-                else
-                    currentMainBarProgress = 0;
-
-
-
-
-
-                if (ShowActiveTimeInSeconds)
-                {
-                    label2TimeLabelText.Text = activatedFullTime.Second.ToString();
-                }
-                else
-                    label2TimeLabelText.Text = activatedFullTime.ToLongTimeString().ToString();
-
-                label3.Text = msgFromInput;
+                label2TimeLabelText.Text = activatedFullTime.ToString().TrimEnd('0', ' ');
             }
-            Invalidate();
+        }
+
+        private void OnArtistStateInactiveActivated()
+        {
+            progressBarTopMost.BackColor = Color.FromArgb(221, 44, 0);
+
+        }
+        private void OnArtistStateInactiveTick()
+        {
 
         }
 
 
+        private bool CheckArtistStateChanged()
+        {
+            ArtistState newState = TickTimerGetNewArtistStateBasedOnInput();
 
 
+
+
+            bool changed;
+
+            if (ArtistState == ArtistState.ACTIVE)
+                changed = false;
+            else
+                changed = true;
+
+            ArtistState = newState;
+
+
+            if (changed)
+                if (ArtistState == ArtistState.ACTIVE)
+                    OnArtistStateActiveActivated();
+                else
+                    OnArtistStateInactiveActivated();
+
+
+
+
+
+            return changed;
+        }
+
+        private ArtistState TickTimerGetNewArtistStateBasedOnInput()
+        {
+
+            if (Control.ModifierKeys == Keys.Control)
+                return ArtistState.ACTIVE;
+
+            if (!receivedInputFromPenOnLastWndProc)
+            {
+                if (penTrackingResetCounterLimitAsOfPenTrackingErrorOffset > 0)
+                {
+                    penTrackingResetCounter++;
+
+                    if (penTrackingResetCounter > penTrackingResetCounterLimitAsOfPenTrackingErrorOffset)
+                    {
+
+                        return ArtistState.INACTIVE;
+                    }
+                    else
+                        return ArtistState.ACTIVE;
+                }
+                else
+                    return ArtistState.INACTIVE;
+
+
+            }
+
+
+            if (receivedInputFromPenOnLastWndProc)
+            {
+                penTrackingResetCounter = 0;
+                return ArtistState.ACTIVE;
+            }
+
+            return ArtistState.INACTIVE;
+
+        }
 
         [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
         protected override void WndProc(ref Message message)
         {
             //Console.WriteLine(m);
 
-            msg = message.Msg.ToString();
+            wndProcMsg = message.Msg.ToString();
 
 
 
             switch (message.Msg)
             {
                 case (int)MsgType.WM_INPUT:
-
-                    isArtistActive = true;
-
-                    msgFromInput = message.LParam.ToString();
-                    penTrackingResetCounter = 0;
-
+                    receivedInputFromPenOnLastWndProc = true;
 
                     break;
 
                 default:
-                    penTrackingResetCounter++;
+                    receivedInputFromPenOnLastWndProc = false;
 
-                    if (penTrackingResetCounter > penTrackingResetCounterLimitAsOfPenTrackingErrorOffset)
-                    {
-                        isArtistActive = false;
-                        msgFromInput = "";
-                        penTrackingResetCounter = 0;
-                    }
+
                     break;
             }
 
@@ -355,47 +380,77 @@ namespace DFA
 
         }
 
-
-        protected override void OnFormClosed(FormClosedEventArgs e)
+        private void CreateGraphicalTickTimer()
         {
-            trayIcon.Visible = false;
-            trayIcon.Dispose();
+            Timer timerProgressBarsUpdate = new Timer();
+            timerProgressBarsUpdate.Interval = graphicalProgressBarUpdateInMiliseconds;
+            timerProgressBarsUpdate.Tick += new EventHandler(TimerUpdateProgressBarsGraphically);
+            timerProgressBarsUpdate.Start();
+        }
+
+
+        float currentVisualProgressOfLerp = 0;
+        float desiredBarValue = 0;
+        float percentFilled = 0;
+        public int timeSecToFillMainBar = 5;
 
 
 
-            base.OnFormClosed(e);
+        private void TimerUpdateProgressBarsGraphically(object sender, EventArgs e)
+        {
+            if (ArtistActive)
+            {
+
+                float rest = (float)(activatedFullTime.TotalSeconds % (timeSecToFillMainBar));
+                percentFilled = Utils.ToProcentage(rest, 0, timeSecToFillMainBar);
+                desiredBarValue = (int)Utils.ProcentToProgressBarValue(progressBarBottomMost, percentFilled);
+            }
+
+
+
+            if (currentVisualProgressOfLerp > desiredBarValue)
+            {
+                currentVisualProgressOfLerp = desiredBarValue;
+                progressBarBottomMost.Value = (int)desiredBarValue;
+            }
+
+            float lerpSpeed = percentFilled / 100;
+            currentVisualProgressOfLerp = Utils.Lerp(currentVisualProgressOfLerp, desiredBarValue, lerpSpeed);
+
+            progressBarBottomMost.Value = (int)currentVisualProgressOfLerp < 0 ? 0 : (int)currentVisualProgressOfLerp;
+
+            //label3.Text = "r" + rest + " %" + percentFilled + " d" + desiredBarValue + "l" + lerpSpeed;
+
+            Invalidate();
 
         }
 
-        private int ToSmoothProgressBarProcentage(float current, float min, float max)
+        private void CreateMilestoneTimer()
         {
-            var range = max - min;
-            var correctedStartVal = current - min;
 
-            return (int)((correctedStartVal * 10000) / range);
+            Timer timerMilestone = new Timer();
+            timerMilestone.Interval = MilestoneCheckingInterval;
+            timerMilestone.Tick += new EventHandler(TimerMilestone);
+            timerMilestone.Start();
         }
 
-        private float ToProcentage(float current, float min, float max)
+        Milestone milestone;
+        private void TimerMilestone(object sender, EventArgs e)
         {
-            var range = max - min;
-            var correctedStartVal = current - min;
-
-            return (correctedStartVal * 100) / range;
+            //if (CurrentArtistState == ArtistState.ACTIVE)
+            //{
+            //    TimeSpan r = milestone.CheckTimespanMilestoneAchieved(TimeSpan.FromHours(activatedFullTime.Hour) + TimeSpan.FromMinutes(activatedFullTime.Minute) + TimeSpan.FromSeconds(activatedFullTime.Second));
+            //    if (r > new TimeSpan(0, 0, 1))
+            //        label4.Text = milestone.GetAchievedMessage();
+            //    label5.Text = r.ToString();
+            //}
         }
 
-        float Lerp(float firstFloat, float secondFloat, float by)
-        {
-            return firstFloat + (secondFloat - firstFloat) * by;
-        }
 
-        System.Numerics.Vector2 Lerp(Vector2 firstVector, Vector2 secondVector, float by)
-        {
-            float retX = Lerp(firstVector.X, secondVector.X, by);
-            float retY = Lerp(firstVector.Y, secondVector.Y, by);
-            return new Vector2(retX, retY);
-        }
 
-      
+
+
+
 
 
         public bool isMouseDown = false;
@@ -418,7 +473,6 @@ namespace DFA
             if (e.Button == MouseButtons.Right)
             {
                 isRMouseDown = true;
-                label5.Text = "FormMouseDown " + e.Button.ToString();
 
                 mouseinX = MousePosition.X - Bounds.X;
                 mouseinY = MousePosition.Y - Bounds.Y;
@@ -432,7 +486,7 @@ namespace DFA
 
         private void FormMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (isMouseDown)
+            if (isRMouseDown)
             {
 
 
@@ -447,7 +501,6 @@ namespace DFA
 
         private void FormMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            label5.Text = "FormMouseUp " + e.Button.ToString();
 
 
             if (Control.MouseButtons == MouseButtons.None)
@@ -476,5 +529,16 @@ namespace DFA
             }
 
         }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            trayIcon.Dispose();
+            trayIcon.Icon = null;
+            trayIcon.Visible = false;
+
+            base.OnFormClosed(e);
+
+        }
+
     }
 }
