@@ -8,6 +8,21 @@ namespace DFA
 {
     public static class Utils
     {
+        public static StringBuilder Truncate(this StringBuilder value, int maxLength)
+        {
+            if (value.Length < 1) return value;
+            if (value.Length <= maxLength)
+                return value;
+            value.Remove(maxLength  ,value.Length - maxLength);
+            value = new StringBuilder(value.ToString());
+            //StringBuilder v =  value.Length <= maxLength ? value : value.Remove(maxLength - (value.Length - maxLength), value.Length);
+            return value;
+        }
+        public static string Truncate(this string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength);
+        }
         public static int ValueToProgressBarProcent(float current, float min, float max)
         {
             var range = max - min;

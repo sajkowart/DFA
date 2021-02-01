@@ -265,7 +265,18 @@ namespace DFA
             }
             else
             {
-                label2TimeLabelText.Text = activatedFullTime.ToString().TrimEnd('0', ' ');
+
+                StringBuilder sb = new StringBuilder(activatedFullTime.ToString());
+                sb.Truncate(11);
+
+                if (sb.Length == 8)
+                    sb.Append(".00");
+                label2TimeLabelText.Text = sb.ToString();
+
+                sb.Clear();
+                sb = null;
+
+             
             }
         }
 
