@@ -18,30 +18,9 @@ namespace DFA
 
     public partial class MainForm : Form
     {
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetActiveWindow();
+        
 
-        [DllImport("user32.dll")]
-        public static extern bool RegisterRawInputDevices(RAWINPUTDEVICE pRawInputDevices, uint uiNumDevices, uint cbSize);
-        [DllImport("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-
-        [DllImport("user32.dll")]
-        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-
-        [DllImport("user32.dll")]
-        public static extern bool ReleaseCapture();
-
-        public IntPtr HWnd { get; set; }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RAWINPUTDEVICE
-        {
-            public ushort usUsagePage;
-            public ushort usUsage;
-            public uint dwFlags;
-            public IntPtr hwndTarget;
-        }
+        
         public enum MsgType
         {
             WM_INPUT = 0x00FF
@@ -65,9 +44,23 @@ namespace DFA
 
         int refreshArtistStateTickTimerInMiliseconds = 50;//, 10 * 1000 = 10 secs , 100 = ,1 sec
 
+        public DateTime startingTime;
+        public DateTime lastStopTime;
 
-        private static ArtistState currentArtistState = ArtistState.INACTIVE;
-        public static ArtistState ArtistState { get => currentArtistState; set => currentArtistState = value; }
+
+        public TimeSpan activatedFullTime;
+
+        public bool ShowActiveTimeInSeconds = false;
+
+
+
+        public int graphicalProgressBarUpdateInMiliseconds = 5;
+        private bool receivedInputFromPenOnLastWndProc = false;
+
+
+
+        private static ArtistState _currentArtistState = ArtistState.INACTIVE;
+        public static ArtistState ArtistState { get => _currentArtistState; set => _currentArtistState = value; }
 
         public static bool ArtistActive
         {
@@ -83,6 +76,7 @@ namespace DFA
 
 
         private NotifyIcon trayIcon;
+        public IntPtr HWnd { get; set; }
 
         public MainForm()
         {
@@ -204,19 +198,6 @@ namespace DFA
             }
 
         }
-
-
-        public DateTime startingTime;
-        public TimeSpan differenceOnStopTimeFromLastStopTime;
-        public DateTime lastStopTime;
-        public TimeSpan activatedFullTime;
-        public bool UpdatedDifferenceOnStop = false;
-        public bool ShowActiveTimeInSeconds = false;
-
-
-
-        public int graphicalProgressBarUpdateInMiliseconds = 5;
-        private bool receivedInputFromPenOnLastWndProc = false;
 
 
         private void CreateArtistStateTickTimer()
