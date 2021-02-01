@@ -16,16 +16,17 @@ using System.Windows.Forms;
 namespace DFA
 {
 
-    public partial class MainForm : Form
+    public partial class MainForm : Form , IMainForm
     {
-        
 
-        
+
+
         public enum MsgType
         {
             WM_INPUT = 0x00FF
 
         }
+
         public int DefaultWindowX => Screen.FromControl(this).WorkingArea.Width / 2;
         public int DefaultWindowY => 0;
 
@@ -36,7 +37,6 @@ namespace DFA
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int WM_NCRBUTTONDOWN = 0xA4;
         public const int WM_RBUTTONDOWN = 0x0204;
-        private const int MilestoneCheckingInterval = 300;
         int penTrackingResetCounter = 0;
         int penTrackingResetCounterLimitAsOfPenTrackingErrorOffset = 0;
         String wndProcMsg;
@@ -60,7 +60,7 @@ namespace DFA
 
 
         private static ArtistState _currentArtistState = ArtistState.INACTIVE;
-        public static ArtistState ArtistState { get => _currentArtistState; set => _currentArtistState = value; }
+        public static ArtistState ArtistState { get => _currentArtistState; private set => _currentArtistState = value; }
 
         public static bool ArtistActive
         {
@@ -98,8 +98,9 @@ namespace DFA
 
             CreateGraphicalTickTimer();
 
-            milestone = new Milestone();
-            CreateMilestoneTimer();
+
+
+            CreateMilestones();
 
         }
 
@@ -120,7 +121,7 @@ namespace DFA
             rid.hwndTarget = HWnd;
 
             //if (RegisterRawInputDevices(rid[1], 1, Convert.ToUInt32(Marshal.SizeOf(rid[1]))) == false)
-            if (RegisterRawInputDevices(rid, 1, Convert.ToUInt32(Marshal.SizeOf(rid))) == false)
+            if (WinApi.RegisterRawInputDevices(rid, 1, Convert.ToUInt32(Marshal.SizeOf(rid))) == false)
             {
                 label1.Text = "registration failed";
             }
@@ -257,7 +258,7 @@ namespace DFA
                 sb.Clear();
                 sb = null;
 
-             
+
             }
         }
 
@@ -417,25 +418,13 @@ namespace DFA
 
         }
 
-        private void CreateMilestoneTimer()
-        {
 
-            Timer timerMilestone = new Timer();
-            timerMilestone.Interval = MilestoneCheckingInterval;
-            timerMilestone.Tick += new EventHandler(TimerMilestone);
-            timerMilestone.Start();
-        }
+        MilestoneSystem milestoneSystem;
 
-        Milestone milestone;
-        private void TimerMilestone(object sender, EventArgs e)
+        private void CreateMilestones()
         {
-            //if (CurrentArtistState == ArtistState.ACTIVE)
-            //{
-            //    TimeSpan r = milestone.CheckTimespanMilestoneAchieved(TimeSpan.FromHours(activatedFullTime.Hour) + TimeSpan.FromMinutes(activatedFullTime.Minute) + TimeSpan.FromSeconds(activatedFullTime.Second));
-            //    if (r > new TimeSpan(0, 0, 1))
-            //        label4.Text = milestone.GetAchievedMessage();
-            //    label5.Text = r.ToString();
-            //}
+            milestoneSystem = new MilestoneSystem(this);
+
         }
 
 
@@ -532,5 +521,16 @@ namespace DFA
 
         }
 
+      
+
+        public void SetMidLable(string text)
+        {
+            label3.Text = text;
+        }
+
+        public TimeSpan GetActivatedTime()
+        {
+            return activatedFullTime;
+        }
     }
 }
