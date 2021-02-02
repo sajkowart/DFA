@@ -36,14 +36,14 @@ namespace DFA
             return (int)((correctedStartVal * 10000) / range);
         }
 
-        public static float ProcentToProgressBarValue(ProgressBar progressBar, float percent)
+        public static float ProcentToProgressBarValue(ProgressBarSoft progressBar, float percent)
         {
-            return progressBar.Maximum * percent / 100;
+            return progressBar.Maximum *  percent / 100;
         }
 
 
 
-        public static int ToProgressBarProcent(ProgressBar progressBar, float current)
+        public static int ToProgressBarProcent(ProgressBarSoft progressBar, float current)
         {
             var range = progressBar.Maximum - progressBar.Minimum;
             var correctedStartVal = current - progressBar.Minimum;

@@ -4,7 +4,6 @@ C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Release\netcoreapp3.1\DFA.runtimeconfig
 C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Release\netcoreapp3.1\DFA.runtimeconfig.dev.json
 C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Release\netcoreapp3.1\DFA.dll
 C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Release\netcoreapp3.1\DFA.pdb
-C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.Form1.resources
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.csproj.GenerateResource.cache
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.AssemblyInfoInputs.cache
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.AssemblyInfo.cs
@@ -13,6 +12,7 @@ C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.dll
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.pdb
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.genruntimeconfig.cache
 C:\Users\Robert\Desktop\WORK\DFA\DFA\bin\Release\netcoreapp3.1\Resources\AppIcon.ico
-C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.Form2.resources
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.TestingForm.resources
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.Properties.Resources.resources
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.Forms.DailyGoalForm.resources
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Release\netcoreapp3.1\DFA.Forms.MainForm.resources

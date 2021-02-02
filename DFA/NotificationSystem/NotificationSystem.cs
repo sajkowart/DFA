@@ -31,7 +31,7 @@ namespace DFA
             mainForm.GetNotificationPictureBox().Size = mainForm.GetNotificationPictureBox().MinimumSize;
 
         }
-        public void NotifyUser(Notification notification)
+        public void ShowNotification(Notification notification)
         {
 
             InsertNotificationInQueue(notification);
@@ -104,7 +104,6 @@ namespace DFA
             notificationQueue.First.Value.discardTimer -= TimeSpan.FromSeconds(1);
             if (notificationQueue.First.Value.discardTimer.TotalSeconds <= 1)
             {
-                mainForm.SetMidLable("finished");
 
 
                 StartHidingNotification();
@@ -126,7 +125,6 @@ namespace DFA
 
         public void FinishHidingNotification()
         {
-            mainForm.SetMidLable("rem");
 
             StopNotificationTimer();
             notificationQueue.RemoveFirst();
@@ -163,7 +161,6 @@ namespace DFA
         {
 
 
-            // mainForm.SetMidLable("d " +desiredSize.Height + " " +  mainForm.GetNotificationPictureBox().Size.Height.ToString());
 
             var startingW = mainForm.GetNotificationPictureBox().Size.Width;
             var startingH = mainForm.GetNotificationPictureBox().Size.Height;
@@ -190,7 +187,6 @@ namespace DFA
             }
 
 
-            mainForm.SetMidLable("old" + mainForm.GetNotificationPictureBox().Size.Height + " new" + newSize.Height + "d " + desiredSize.Height);
 
             mainForm.GetNotificationPictureBox().Size = newSize;
 
@@ -203,8 +199,7 @@ namespace DFA
                 if (mainForm.GetNotificationPictureBox().Size.Height <= mainForm.GetNotificationPictureBox().MinimumSize.Height)
                     FinishHidingNotification();
             }
-
-
+            mainForm.Invalidate();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DFA
 {
@@ -25,7 +26,7 @@ namespace DFA
 
         private void MilestoneAchieved(TimespanMilestone currentMilestone)
         {
-            mainForm.SetMidLable(currentMilestone.GetMessageMilestoneAchieved());
+            mainForm.ShowNotification(new Notification(currentMilestone.GetMessageMilestoneAchieved(), false,TimeSpan.FromSeconds(5)));
         }
 
         public void Tick()

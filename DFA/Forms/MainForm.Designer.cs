@@ -37,8 +37,8 @@ namespace DFA.Forms
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.progressBarBottomMost = new DFA.NewProgressBar();
-            this.progressBarTopMost = new DFA.NewProgressBar();
+            this.progressBarBottomMost = new DFA.ProgressBarSoft();
+            this.progressBarTopMost = new DFA.ProgressBarSoft();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
             this.labelNotification = new System.Windows.Forms.Label();
@@ -79,6 +79,7 @@ namespace DFA.Forms
             this.label2.TabIndex = 2;
             this.label2.Text = "label2";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             this.label2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
             this.label2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseMove);
             this.label2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
@@ -113,7 +114,7 @@ namespace DFA.Forms
             this.label4.Size = new System.Drawing.Size(194, 14);
             this.label4.TabIndex = 3;
             this.label4.Text = "label4";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label4.MouseClick += new System.Windows.Forms.MouseEventHandler(this.label4_MouseClick);
             this.label4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
             this.label4.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseMove);
@@ -126,15 +127,15 @@ namespace DFA.Forms
             this.progressBarBottomMost.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
             this.progressBarBottomMost.Location = new System.Drawing.Point(0, 20);
             this.progressBarBottomMost.Margin = new System.Windows.Forms.Padding(0);
-            this.progressBarBottomMost.Maximum = 10000;
+            this.progressBarBottomMost.Maximum = 100F;
             this.progressBarBottomMost.MaximumSize = new System.Drawing.Size(1500, 8);
+            this.progressBarBottomMost.Minimum = 0F;
             this.progressBarBottomMost.MinimumSize = new System.Drawing.Size(1000, 8);
             this.progressBarBottomMost.Name = "progressBarBottomMost";
             this.progressBarBottomMost.Size = new System.Drawing.Size(1000, 8);
-            this.progressBarBottomMost.Step = 1;
-            this.progressBarBottomMost.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBarBottomMost.TabIndex = 5;
-            this.progressBarBottomMost.Value = 5000;
+            this.progressBarBottomMost.Value = 0F;
+            this.progressBarBottomMost.WithLerp = false;
             // 
             // progressBarTopMost
             // 
@@ -143,13 +144,15 @@ namespace DFA.Forms
             this.progressBarTopMost.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(187)))), ((int)(((byte)(143)))), ((int)(((byte)(206)))));
             this.progressBarTopMost.Location = new System.Drawing.Point(0, 0);
             this.progressBarTopMost.Margin = new System.Windows.Forms.Padding(0);
+            this.progressBarTopMost.Maximum = 100F;
             this.progressBarTopMost.MaximumSize = new System.Drawing.Size(1500, 2);
+            this.progressBarTopMost.Minimum = 0F;
             this.progressBarTopMost.MinimumSize = new System.Drawing.Size(1000, 2);
             this.progressBarTopMost.Name = "progressBarTopMost";
             this.progressBarTopMost.Size = new System.Drawing.Size(1000, 2);
-            this.progressBarTopMost.Step = 1;
-            this.progressBarTopMost.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBarTopMost.TabIndex = 6;
+            this.progressBarTopMost.Value = 50F;
+            this.progressBarTopMost.WithLerp = false;
             // 
             // tableLayoutPanel1
             // 
@@ -229,6 +232,7 @@ namespace DFA.Forms
             this.flowLayoutPanel1Parent.Size = new System.Drawing.Size(1000, 80);
             this.flowLayoutPanel1Parent.TabIndex = 8;
             this.flowLayoutPanel1Parent.WrapContents = false;
+            this.flowLayoutPanel1Parent.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanel1Parent_Paint);
             // 
             // pictureBoxNotification
             // 
@@ -282,8 +286,8 @@ namespace DFA.Forms
         private Label label4;
         private Label label5;
         private Label labelNotification;
-        private NewProgressBar progressBarBottomMost;
-        private NewProgressBar progressBarTopMost;
+        private ProgressBarSoft progressBarBottomMost;
+        private ProgressBarSoft progressBarTopMost;
         private TableLayoutPanel tableLayoutPanel1;
         private FlowLayoutPanel flowLayoutPanel1Parent;
         private PictureBox pictureBoxNotification;

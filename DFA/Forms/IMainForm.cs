@@ -9,6 +9,7 @@ namespace DFA
         static bool ArtistActive { get; set; }
 
 
+        public void ShowNotification(Notification notification);
         public void SetMidLable(string text);
         
     }
