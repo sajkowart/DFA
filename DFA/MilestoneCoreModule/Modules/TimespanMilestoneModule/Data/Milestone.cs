@@ -15,6 +15,11 @@ namespace DFA
             "You rock!",
             "Hell yeah!"
         };
+        
+        public static string GetDefaultMilestoneMessage()
+        {
+            return defaultMilestoneMessages[new Random().Next(Milestone.defaultMilestoneMessages.Count)];
+        }
 
 
     }

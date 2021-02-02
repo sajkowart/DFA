@@ -1,3 +1,4 @@
+using DFA.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ namespace DFA
             Application.SetCompatibleTextRenderingDefault(false);
 
 
-            var form1 = new Form1();
             var mainForm = new MainForm();
 
-            var testingForm = new TestingForm();
+           // var testingForm = new TestingForm();
 
 
             Application.Run(mainForm);

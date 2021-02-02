@@ -1,22 +1,14 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using System.Linq;
-using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DFA
+namespace DFA.Forms
 {
 
-    public partial class MainForm : Form , IMainForm
+    public partial class MainForm : Form, IMainForm
     {
 
 
@@ -39,10 +31,8 @@ namespace DFA
         public const int WM_RBUTTONDOWN = 0x0204;
         int penTrackingResetCounter = 0;
         int penTrackingResetCounterLimitAsOfPenTrackingErrorOffset = 0;
-        String wndProcMsg;
-        String msgFromInput;
-
-        int refreshArtistStateTickTimerInMiliseconds = 50;//, 10 * 1000 = 10 secs , 100 = ,1 sec
+      
+        int refreshArtistStateTickTimerInMiliseconds = 50;//, 10 * 1000 = 10 secs , 1000 = ,1 sec
 
         public DateTime startingTime;
         public DateTime lastStopTime;
@@ -77,21 +67,27 @@ namespace DFA
 
         private NotifyIcon trayIcon;
         public IntPtr HWnd { get; set; }
+        
 
         public MainForm()
         {
             InitializeComponent();
+            HWnd = this.Handle;
+
+
+            ClearLabels();
 
             CreateTrayMenu();
             LoadWindowPosition();
+            LoadDailyGoal();
 
-            this.ControlBox = false;
-            this.Text = "DFA";
+            this.DoubleBuffered = true;
+
+            
 
             startingTime = DateTime.Now;
             lastStopTime = DateTime.Now;
 
-            HWnd = this.Handle;
             RegisterTabletDevice();
 
             CreateArtistStateTickTimer();
@@ -101,7 +97,31 @@ namespace DFA
 
 
             CreateMilestoneSystem();
+            CreateNotificationSystem();
+        }
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams handleParam = base.CreateParams;
+                handleParam.ExStyle |= 0x02000000;   // WS_EX_COMPOSITED       
+                return handleParam;
+            }
+        }
 
+        private void LoadDailyGoal()
+        {
+            if (DailyGoalForm.GetDailyGoalTimespan(out TimeSpan result))
+                SetDailyGoal(result);
+        }
+
+        private void ClearLabels()
+        {
+            label1.Text = "";
+            label2.Text = "";
+            label3.Text = "00:00:00.00";
+            label4.Text = "Set daily goal!";
+            label5.Text = "";
         }
 
         protected override void OnLoad(EventArgs e)
@@ -120,15 +140,9 @@ namespace DFA
             rid.dwFlags = 0x00000100;
             rid.hwndTarget = HWnd;
 
-            //if (RegisterRawInputDevices(rid[1], 1, Convert.ToUInt32(Marshal.SizeOf(rid[1]))) == false)
             if (WinApi.RegisterRawInputDevices(rid, 1, Convert.ToUInt32(Marshal.SizeOf(rid))) == false)
             {
                 label1.Text = "registration failed";
-            }
-            else
-            {
-                //      label1.Text = "registration success";
-
             }
         }
         public void CreateTrayMenu()
@@ -217,7 +231,7 @@ namespace DFA
 
 
 
-            if (ArtistState == ArtistState.ACTIVE)
+            if (ArtistActive)
                 OnArtistStateActiveTick();
             else
                 OnArtistStateInactiveTick();
@@ -243,7 +257,7 @@ namespace DFA
         {
             if (ShowActiveTimeInSeconds)
             {
-                label2TimeLabelText.Text = activatedFullTime.TotalSeconds.ToString().TrimEnd('0', ' ');
+                label3.Text = activatedFullTime.TotalSeconds.ToString().TrimEnd('0', ' ');
             }
             else
             {
@@ -253,7 +267,7 @@ namespace DFA
 
                 if (sb.Length == 8)
                     sb.Append(".00");
-                label2TimeLabelText.Text = sb.ToString();
+                label3.Text = sb.ToString();
 
                 sb.Clear();
                 sb = null;
@@ -343,9 +357,7 @@ namespace DFA
         [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
         protected override void WndProc(ref Message message)
         {
-            //Console.WriteLine(m);
 
-            wndProcMsg = message.Msg.ToString();
 
 
 
@@ -382,48 +394,94 @@ namespace DFA
         }
 
 
-        float currentVisualProgressOfLerp = 0;
-        float desiredBarValue = 0;
-        float percentFilled = 0;
-        public int timeSecToFillMainBar = 5;
+        float botCurrentVisualProgressOfLerp = 0;
+        float botDesiredBarValue = 0;
+        float botPercentFilled = 0;
+        public int timeSecToFillBotBar = 5;
+
+        float topCurrentVisualProgressOfLerp = 0;
+        float topDesiredBarValue = 0;
+        float topPercentFilled = 0;
+        public int timeSecToFillTopBar = 0;
 
 
 
         private void TimerUpdateProgressBarsGraphically(object sender, EventArgs e)
         {
-            if (ArtistActive)
-            {
 
-                float rest = (float)(activatedFullTime.TotalSeconds % (timeSecToFillMainBar));
-                percentFilled = Utils.ToProcentage(rest, 0, timeSecToFillMainBar);
-                desiredBarValue = (int)Utils.ProcentToProgressBarValue(progressBarBottomMost, percentFilled);
-            }
-
-
-
-            if (currentVisualProgressOfLerp > desiredBarValue)
-            {
-                currentVisualProgressOfLerp = desiredBarValue;
-                progressBarBottomMost.Value = (int)desiredBarValue;
-            }
-
-            float lerpSpeed = percentFilled / 100;
-            currentVisualProgressOfLerp = Utils.Lerp(currentVisualProgressOfLerp, desiredBarValue, lerpSpeed);
-
-            progressBarBottomMost.Value = (int)currentVisualProgressOfLerp < 0 ? 0 : (int)currentVisualProgressOfLerp;
-
-            //label3.Text = "r" + rest + " %" + percentFilled + " d" + desiredBarValue + "l" + lerpSpeed;
+            UpdateTopBar();
+            UpdateBottomBar();
 
             Invalidate();
 
+
         }
 
+        private void UpdateTopBar()
+        {
+            if (timeSecToFillTopBar == 0)
+                return;
+            if (ArtistActive)
+            {
+
+                float rest = (float)(activatedFullTime.TotalSeconds % (timeSecToFillTopBar));
+                topPercentFilled = Utils.ToProcentage(rest, 0, timeSecToFillTopBar);
+                topDesiredBarValue = (int)Utils.ProcentToProgressBarValue(progressBarBottomMost, topPercentFilled);
+            }
+
+
+
+            if (topCurrentVisualProgressOfLerp > topDesiredBarValue)
+            {
+                topCurrentVisualProgressOfLerp = topDesiredBarValue;
+                progressBarBottomMost.Value = (int)topDesiredBarValue;
+            }
+
+            float lerpSpeed = topPercentFilled / 100;
+            topCurrentVisualProgressOfLerp = Utils.Lerp(topCurrentVisualProgressOfLerp, topDesiredBarValue, lerpSpeed);
+
+            progressBarBottomMost.Value = (int)topCurrentVisualProgressOfLerp < 0 ? 0 : (int)topCurrentVisualProgressOfLerp;
+
+
+
+        }
+
+        private void UpdateBottomBar()
+        {
+            if (ArtistActive)
+            {
+
+                float rest = (float)(activatedFullTime.TotalSeconds % (timeSecToFillBotBar));
+                botPercentFilled = Utils.ToProcentage(rest, 0, timeSecToFillBotBar);
+                botDesiredBarValue = (int)Utils.ProcentToProgressBarValue(progressBarBottomMost, botPercentFilled);
+            }
+
+
+
+            if (botCurrentVisualProgressOfLerp > botDesiredBarValue)
+            {
+                botCurrentVisualProgressOfLerp = botDesiredBarValue;
+                progressBarBottomMost.Value = (int)botDesiredBarValue;
+            }
+
+            float lerpSpeed = botPercentFilled / 100;
+            botCurrentVisualProgressOfLerp = Utils.Lerp(botCurrentVisualProgressOfLerp, botDesiredBarValue, lerpSpeed);
+
+            progressBarBottomMost.Value = (int)botCurrentVisualProgressOfLerp < 0 ? 0 : (int)botCurrentVisualProgressOfLerp;
+        }
 
         MilestoneSystem milestoneSystem;
 
         private void CreateMilestoneSystem()
         {
             milestoneSystem = new MilestoneSystem(this);
+
+        }
+
+        NotificationSystem notificationSystem;
+        private void CreateNotificationSystem()
+        {
+            notificationSystem = new NotificationSystem(this);
 
         }
 
@@ -474,6 +532,20 @@ namespace DFA
             }
         }
 
+        private void SaveWindowPosition()
+        {
+            RegistryKey key;
+            key = Registry.CurrentUser.OpenSubKey("DFA", true);
+            if (key == null)
+                key = Registry.CurrentUser.CreateSubKey("DFA", true);
+
+            int x = this.Location.X;
+            int y = this.Location.Y;
+            key.SetValue("DFAMainWindowPositionX", x);
+            key.SetValue("DFAMainWindowPositionY", y);
+
+            key.Close();
+        }
 
         private void FormMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
@@ -488,19 +560,9 @@ namespace DFA
             if (e.Button == MouseButtons.Right)
             {
                 isRMouseDown = false;
-                RegistryKey key;
-                key = Registry.CurrentUser.OpenSubKey("DFA", true);
-                if (key == null)
-                    key = Registry.CurrentUser.CreateSubKey("DFA", true);
 
-                int x = this.Location.X;
-                int y = this.Location.Y;
-                key.SetValue("DFAMainWindowPositionX", x);
-                key.SetValue("DFAMainWindowPositionY", y);
+                SaveWindowPosition();
 
-
-
-                key.Close();
 
             }
 
@@ -516,7 +578,7 @@ namespace DFA
 
         }
 
-      
+
 
         public void SetMidLable(string text)
         {
@@ -526,6 +588,42 @@ namespace DFA
         public TimeSpan GetActivatedTime()
         {
             return activatedFullTime;
+        }
+
+        public PictureBox GetNotificationPictureBox()
+        {
+            return pictureBoxNotification;
+        }
+        public Label GetNotificationLabel()
+        {
+            return labelNotification;
+        }
+
+        public void SetDailyGoal(TimeSpan time)
+        {
+            label4.Text = "Daily goal:";
+            label5.Text = time.ToString();
+
+
+            timeSecToFillTopBar = (int)time.TotalSeconds;
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            notificationSystem.NotifyUser(new Notification(Milestone.GetDefaultMilestoneMessage(), false, TimeSpan.FromSeconds(3)));
+        }
+
+        private void label4_MouseClick(object sender, MouseEventArgs e)
+        {
+            DailyGoalForm dialog = new DailyGoalForm();
+            var result = dialog.ShowDialog();
+
+            label1.Text = result.ToString() + "res";
+
+
+            //string promptValue = Prompt.ShowDialog("Test", "123");
+
+            // label1.Text = promptValue;
         }
     }
 }

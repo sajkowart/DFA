@@ -38,7 +38,7 @@ namespace DFA
         {
             return milestoneAchievedText != null ?
                 milestoneAchievedText[new Random().Next(milestoneAchievedText.Length)]
-            : Milestone.defaultMilestoneMessages[new Random().Next(Milestone.defaultMilestoneMessages.Count)];
+            : Milestone.GetDefaultMilestoneMessage();
         }
     }
 }

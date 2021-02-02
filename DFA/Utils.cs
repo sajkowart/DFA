@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
@@ -8,6 +9,11 @@ namespace DFA
 {
     public static class Utils
     {
+        public static void DoubleBuffered(this Control control, bool enabled)
+        {
+            var prop = control.GetType().GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+            prop.SetValue(control, enabled, null);
+        }
         public static StringBuilder Truncate(this StringBuilder value, int maxLength)
         {
             if (value.Length < 1) return value;
